@@ -270,48 +270,35 @@ const UpcomingEventsSection = () => {
   );
 };
 
+// ✨ MODIFIED: New update added, old images removed.
+const updatesData = [
+  {
+    title: "Conducted Orientation for MBA College",
+    date: "Aug 21, 2025",
+    snippet: "An engaging orientation was held for MBA students, introducing them to entrepreneurship principles and the role of IEDC.",
+    imageUrl: galleryPic3 // Using an existing gallery image for the new update
+  },
+  {
+    title: "New Student Lead 2 elected",
+    date: "Aug 14, 2025",
+    snippet: "Saniya Fathima was elected as the new Student Lead 2, bringing fresh perspectives and leadership to the team."
+    // No imageUrl
+  },
+  {
+    title: "ASET team wins national-level hackathon",
+    date: "July 13, 2025",
+    snippet: "A team from S5 CSE B participated in HACKON 2.0, organised by IEDC MCET, and secured the first prize."
+    // No imageUrl
+  }
+];
 
-const updatesData = [ { title: "New Student Lead 2 elected", date: "Aug 14, 2025", snippet: "Saniya Fathima was elected as the Student Lead 2.", imageUrl: galleryPic2 }, { title: "ASET team wins national-level hackathon", date: "July 13, 2025", snippet: "A team from S5 CSE B participated in HACKON 2.0, organised by IEDC MCET at Trivandrum, and grabbed the first prize.", imageUrl: galleryPic1 } ];
 const LatestUpdatesSection = ({ onImageClick }) => ( <div className="bg-gray-50 py-12 sm:py-16"><div className="max-w-6xl mx-auto px-6"><SectionTitle title="Latest Updates" /><div className="mt-12 space-y-8">{updatesData.map(update => <UpdateCard key={update.title} {...update} onImageClick={() => onImageClick(update.imageUrl)} />)}</div></div></div> );
 const testimonialsData = [ { quote: "The IEDC session was informative and motivating. It gave a clear overview of entrepreneurship, innovation, and startup opportunities. The session encouraged creative thinking and inspired us to explore new ideas. Overall, it was a valuable and engaging experience.", name: "Santhwana CR", role: "2nd Year, Ahalia Nursing College", imageUrl: "https://images.unsplash.com/photo-1517841905240-472-un-photo.jpg" }, { quote: "Being part of IEDC has been a turning point in my journey. It gave me the platform to explore beyond academics and discover my true potential. Through IEDC, I was able to build essential skills like communication, leadership, and teamwork .  IEDC ASET has truly been the launchpad for my confidence and career.", name: "Vishnu VS", role: "Student Lead, IEDC ASET", imageUrl: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500&auto=format&fit=crop&q=60" }, { quote: "Being the Student Lead of IEDC I was able to try new things, meet amazing people, and push myself beyond academics.It helped me improve my communication, leadership, teamwork, and even made me a more confident speaker. More than that, it gave me the belief in myself and the courage to take steps toward my career", name: "Saniya Fathima A", role: "Student Lead, IEDC ASET", imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60" } ];
 const TestimonialsSection = () => { const [currentIndex, setCurrentIndex] = useState(0); const [isFading, setIsFading] = useState(false); useEffect(() => { const interval = setInterval(() => { setIsFading(true); setTimeout(() => { setCurrentIndex((prev) => (prev + 1) % testimonialsData.length); setIsFading(false); }, 500); }, 7000); return () => clearInterval(interval); }, []); const currentTestimonial = testimonialsData[currentIndex]; return ( <div className="bg-white py-12 sm:py-16"><div className="max-w-6xl mx-auto px-6"><SectionTitle title="What Our Members Say" /><div className="mt-16 flex items-center justify-center"><div className="bg-white p-8 rounded-lg shadow-md border border-gray-200 w-full max-w-2xl mx-auto relative min-h-48 flex items-center justify-center"><div className={`transition-opacity duration-500 w-full ${isFading ? 'opacity-0' : 'opacity-100'}`}><p className="text-gray-600 italic text-center">"{currentTestimonial.quote}"</p><div className="mt-6 flex items-center justify-center"><div className="text-left ml-4"><p className="font-bold text-gray-900">{currentTestimonial.name}</p><p className="text-sm text-gray-500">{currentTestimonial.role}</p></div></div></div></div></div></div></div> ); };
 const teamData = { nodalOfficers: [ { name: "Lakshmy Suresh", role: "Nodal Officer 1", imageUrl: nodalOfficer1Img }, { name: "Vipin Das", role: "Nodal Officer 2", imageUrl: nodalOfficer2Img } ], coreTeam: [ { name: "Vishnu VS", role: "Student Lead 1", imageUrl: ex01Img }, { name: "Saniya Fathima", role: "Student Lead 2", imageUrl: ex02Img }, { name: "Somya Ranjan Mohanty", role: "Quality and Operation Lead", imageUrl: ex03Img }, { name: "Naveen S", role: "Community Lead", imageUrl: ex04Img }, { name: "Midhun M", role: "Technical Lead", imageUrl: ex05Img }, { name: "Abhiram K", role: "Creative and Innovation Lead", imageUrl: ex06Img }, { name: "Irin Ranju", role: "Women and Entrepeneurship Lead", imageUrl: ex07Img }, { name: "Adhoeeba Sherin", role: "Finance Lead", imageUrl: ex08Img }, { name: "Afrah Fathima", role: "Marketing Lead", imageUrl: ex09Img }, { name: "{in progress..}", role: "IPR & Research Lead", imageUrl: ex10nsImg } ] };
 const TeamSection = () => ( <div className="bg-gray-50 py-12 sm:py-16"><div className="max-w-6xl mx-auto px-6"><SectionTitle title="Meet the Team" /><h4 className="text-2xl font-bold text-gray-700 text-center mt-16 mb-8">Nodal Officers</h4><div className="flex justify-center gap-8 md:gap-16">{teamData.nodalOfficers.map(member => <TeamMemberCard key={member.name} {...member} />)}</div><h4 className="text-2xl font-bold text-gray-700 text-center mt-16 mb-8">Core Team</h4><div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 text-center">{teamData.coreTeam.map(member => <TeamMemberCard key={member.name} {...member} />)}</div></div></div> );
 const galleryImages = [ { id: 1, imageUrl: galleryPic1, alt: "Team discussion" }, { id: 2, imageUrl: galleryPic2, alt: "Students collaborating" }, { id: 3, imageUrl: galleryPic3, alt: "Workshop in progress" }, { id: 4, imageUrl: galleryPic4, alt: "Presentation event" }, { id: 5, imageUrl: galleryPic5, alt: "Classroom learning" }, { id: 6, imageUrl: galleryPic6, alt: "Team hands in" }, { id: 7, imageUrl: galleryPic7, alt: "Group meeting" }, { id: 8, imageUrl: galleryPic8, alt: "Students with laptops" }, { id: 9, imageUrl: galleryPic9, alt: "Office brainstorming session" }];
-
-// ✨ MODIFIED: GallerySection is now a Swiper carousel
-const GallerySection = ({ openGallery }) => (
-  <div className="bg-white py-12 sm:py-16">
-    <div className="max-w-6xl mx-auto px-6 overflow-hidden">
-      <SectionTitle title="Gallery" />
-      <div className="mt-12">
-        <Swiper
-          modules={[Pagination]}
-          spaceBetween={15}
-          slidesPerView={1.5}
-          pagination={{
-            el: '.gallery-pagination',
-            clickable: true
-          }}
-          breakpoints={{
-            640: { slidesPerView: 2.5, spaceBetween: 20 },
-            1024: { slidesPerView: 3, spaceBetween: 20 },
-          }}
-          className="!pb-12" // Extra padding for pagination dots
-        >
-          {galleryImages.map((img, index) => (
-            <SwiperSlide key={img.id}>
-              <div onClick={() => openGallery(index)} className="cursor-pointer">
-                <GalleryImage imageUrl={img.imageUrl} alt={img.alt} />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <div className="gallery-pagination flex justify-center mt-4"></div>
-      </div>
-    </div>
-  </div>
-);
+const GallerySection = ({ openGallery }) => ( <div className="bg-white py-12 sm:py-16"> <div className="max-w-6xl mx-auto px-6 overflow-hidden"> <SectionTitle title="Gallery" /> <div className="mt-12"> <Swiper modules={[Pagination]} spaceBetween={15} slidesPerView={1.5} pagination={{ el: '.gallery-pagination', clickable: true }} breakpoints={{ 640: { slidesPerView: 2.5, spaceBetween: 20 }, 1024: { slidesPerView: 3, spaceBetween: 20 }, }} className="!pb-12" > {galleryImages.map((img, index) => ( <SwiperSlide key={img.id}> <div onClick={() => openGallery(index)} className="cursor-pointer"> <GalleryImage imageUrl={img.imageUrl} alt={img.alt} /> </div> </SwiperSlide> ))} </Swiper> <div className="gallery-pagination flex justify-center mt-4"></div> </div> </div> </div> );
 
 const WaveBackground = () => ( <> <style>{` 
 /* (Google Fonts and animations remain the same) */
@@ -322,33 +309,51 @@ const WaveBackground = () => ( <> <style>{`
 .swiper-pagination-custom .swiper-pagination-progressbar .swiper-pagination-progressbar-fill { background: #3B82F6; border-radius: 9999px; }
 .swiper-slide { height: auto; }
 
-/* ✨ NEW: Custom Swiper Styles for Gallery dots */
-.gallery-pagination .swiper-pagination-bullet {
-  background-color: #9CA3AF; /* gray-400 */
-  opacity: 1;
-  transition: all 0.2s ease-in-out;
-}
-.gallery-pagination .swiper-pagination-bullet-active {
-  background-color: #3B82F6; /* blue-500 */
-  transform: scale(1.25);
-}
+/* Custom Swiper Styles for Gallery dots */
+.gallery-pagination .swiper-pagination-bullet { background-color: #9CA3AF; opacity: 1; transition: all 0.2s ease-in-out; }
+.gallery-pagination .swiper-pagination-bullet-active { background-color: #3B82F6; transform: scale(1.25); }
 `}</style> <div className="absolute bottom-0 left-0 w-full h-[600px] overflow-hidden z-10"> <div className="absolute w-[200%] h-full wave-animation" style={{ animationDuration: '30s' }}><div className="absolute w-full h-full bg-gradient-to-r from-cyan-300 to-blue-400 opacity-80" style={{ clipPath: 'url(#wave3)' }}></div></div> <div className="absolute w-[200%] h-full wave-animation opacity-60" style={{ animationDuration: '20s' }}><div className="absolute w-full h-full bg-gradient-to-r from-cyan-400 to-blue-500" style={{ clipPath: 'url(#wave2)' }}></div></div> <div className="absolute w-[200%] h-full wave-animation opacity-60" style={{ animationDuration: '15s' }}><div className="absolute w-full h-full bg-gradient-to-r from-blue-500 to-indigo-600" style={{ clipPath: 'url(#wave1)' }}></div></div> </div> <svg width="0" height="0"><defs><clipPath id="wave1" clipPathUnits="objectBoundingBox"><path d="M0,0.6 C0.2,0.4, 0.3,0.8, 0.5,0.7 C0.7,0.6, 0.8,0.9, 1,0.8 L1,1 L0,1 Z" /></clipPath><clipPath id="wave2" clipPathUnits="objectBoundingBox"><path d="M0,0.7 C0.2,0.5, 0.3,0.9, 0.5,0.8 C0.7,0.7, 0.8,1, 1,0.9 L1,1 L0,1 Z" /></clipPath><clipPath id="wave3" clipPathUnits="objectBoundingBox"><path d="M0,0.8 C0.2,0.6, 0.3,1, 0.5,0.9 C0.7,0.8, 0.8,1, 1,1 L1,1 L0,1 Z" /></clipPath></defs></svg> </> );
 const TopNavigation = ({ navigate, currentPage }) => ( <nav className="w-full flex justify-between items-center py-8"> <button onClick={() => navigate('home')} className={`font-semibold text-base pb-1 transition-colors ${currentPage === 'home' ? 'text-black border-b-2 border-black' : 'text-gray-500 hover:text-black'}`}>Home</button> <button onClick={() => navigate('events')} className={`font-semibold text-base pb-1 transition-colors ${currentPage === 'events' ? 'text-black border-b-2 border-black' : 'text-gray-500 hover:text-black'}`}>Events</button> </nav> );
 const HeroText = ({ isVisible }) => ( <div className={`text-center transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}><h1 className="text-black text-6xl md:text-8xl font-thin tracking-[0.2em]">DIVE</h1><h2 className="text-black text-3xl md:text-5xl font-extrabold tracking-wider mt-2">INTO THE OCEAN OF IDEAS</h2></div> );
 const JoinButton = ({ onClick }) => ( <button onClick={onClick} className="bg-white text-black font-bold text-base tracking-widest py-5 px-14 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">JOIN NOW</button> );
-
-// ✨ MODIFIED: SectionTitle now has a sleek underline
-const SectionTitle = ({ title }) => (
-  <div className="text-center">
-    <div className="relative inline-block pb-4">
-      <h3 className="text-4xl sm:text-5xl font-bold text-gray-900">{title}</h3>
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-blue-500 rounded-full"></div>
-    </div>
-  </div>
-);
-
+const SectionTitle = ({ title }) => ( <div className="text-center"> <div className="relative inline-block pb-4"> <h3 className="text-4xl sm:text-5xl font-bold text-gray-900">{title}</h3> <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-blue-500 rounded-full"></div> </div> </div> );
 const EventCard = ({ title, date, imageUrl, altText, description }) => ( <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 group flex flex-col h-full"><div className="relative"><div className="w-full h-64 bg-gray-100 flex items-center justify-center"><img src={imageUrl} alt={altText} className="max-w-full max-h-full object-contain" /></div><div className="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-colors"></div><div className="absolute top-4 left-4 bg-white text-center rounded-lg shadow-md w-20 py-2"><p className="text-3xl font-extrabold text-blue-600">{date.day}</p><p className="text-sm font-bold text-gray-600 uppercase tracking-wider">{date.month}</p></div></div><div className="p-6 flex-grow flex flex-col"><h4 className="text-2xl font-bold text-gray-900">{title}</h4><p className="mt-2 text-gray-600 flex-grow">{description}</p></div></div> );
-const UpdateCard = ({ title, date, snippet, imageUrl, onImageClick }) => ( <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col sm:flex-row items-start gap-4 sm:gap-6"><div onClick={onImageClick} className="w-full sm:w-48 sm:h-32 rounded-md overflow-hidden flex-shrink-0 cursor-pointer group"><img src={imageUrl} alt={title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300" /></div><div className="flex-grow pt-2"><p className="text-sm text-gray-500">{date}</p><h4 className="text-xl font-bold text-gray-900 mt-1">{title}</h4><p className="text-gray-600 mt-2">{snippet}</p></div></div> );
+
+// ✨ MODIFIED: UpdateCard is now adaptive to whether an image is present or not.
+const UpdateCard = ({ title, date, snippet, imageUrl, onImageClick }) => {
+  // If an imageUrl is provided, render the card with an image
+  if (imageUrl) {
+    return (
+      <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
+        <div 
+          onClick={onImageClick} 
+          className="w-full sm:w-48 sm:h-32 rounded-md overflow-hidden flex-shrink-0 cursor-pointer group"
+        >
+          <img 
+            src={imageUrl} 
+            alt={title} 
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+        <div className="flex-grow sm:pt-2">
+          <p className="text-sm text-gray-500">{date}</p>
+          <h4 className="text-xl font-bold text-gray-900 mt-1">{title}</h4>
+          <p className="text-gray-600 mt-2">{snippet}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Otherwise, render a simpler, text-only card
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+      <p className="text-sm text-gray-500">{date}</p>
+      <h4 className="text-xl font-bold text-gray-900 mt-1">{title}</h4>
+      <p className="text-gray-600 mt-2">{snippet}</p>
+    </div>
+  );
+};
+
 const JoinSection = () => { const [formData, setFormData] = useState({ NAME: '', YEAR: '', BRANCH: '', SECTION: '', 'CONTACT NUMBER': '', 'EMAIL ID': '' }); const [isSubmitting, setIsSubmitting] = useState(false); const [isSubmitted, setIsSubmitted] = useState(false); const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value }); }; const handleSubmit = (e) => { e.preventDefault(); setIsSubmitting(true); const scriptURL = 'https://script.google.com/macros/s/AKfycbxaNmM7-VwO5unwtRJYIfA_HT_ZEjizdvQ4qKnZzAzGRCzY-0hvcHOkEQ-fPiz0eeZ8/exec'; const form = new FormData(); for (const key in formData) { form.append(key, formData[key]); } fetch(scriptURL, { method: 'POST', body: form }) .catch(error => console.error('Google Sheets API Error!', error.message)); setTimeout(() => { setIsSubmitted(true); setFormData({ NAME: '', YEAR: '', BRANCH: '', SECTION: '', 'CONTACT NUMBER': '', 'EMAIL ID': '' }); setIsSubmitting(false); }, 500); }; return ( <div className="max-w-6xl mx-auto px-6"> <div className="bg-white p-8 md:p-12 rounded-lg shadow-md border border-gray-200 min-h-[550px] flex flex-col items-center justify-center"> {!isSubmitted ? ( <> <SectionTitle title="Join the Voyage" /> <form onSubmit={handleSubmit} className="mt-8 w-full grid grid-cols-1 md:grid-cols-2 gap-6"> <input type="text" name="NAME" placeholder="Name" value={formData.NAME} onChange={handleChange} required className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" /> <input type="text" name="YEAR" placeholder="Year" value={formData.YEAR} onChange={handleChange} required className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" /> <input type="text" name="BRANCH" placeholder="Branch" value={formData.BRANCH} onChange={handleChange} required className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" /> <input type="text" name="SECTION" placeholder="Section" value={formData.SECTION} onChange={handleChange} className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" /> <div className="md:col-span-2"><input type="tel" name="CONTACT NUMBER" placeholder="Contact Number" value={formData['CONTACT NUMBER']} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" /></div> <div className="md:col-span-2"><input type="email" name="EMAIL ID" placeholder="Email ID" value={formData['EMAIL ID']} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" /></div> <div className="md:col-span-2 text-center"> <button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white font-bold py-4 px-12 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"> {isSubmitting ? 'Submitting...' : 'SUBMIT'} </button> </div> </form> </> ) : ( <div className="text-center animate-fade-in-pop"> <svg className="w-24 h-24 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> <h3 className="mt-6 text-3xl font-bold text-gray-800">Congratulations!</h3> <p className="mt-3 text-lg text-gray-600">You're officially on board. Welcome to the voyage!</p> <p className="mt-1 text-gray-500">We'll be in touch with you shortly.</p> </div> )} </div> </div> ); };
 const TeamMemberCard = ({ name, role, imageUrl }) => ( <div className="flex flex-col items-center"><img src={imageUrl} alt={name} className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover shadow-md" /><h4 className="mt-4 text-lg font-bold text-gray-900">{name}</h4><p className="text-gray-700 font-semibold text-sm">{role}</p></div> );
 const GalleryImage = ({ imageUrl, alt }) => ( <div className="relative overflow-hidden rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 pb-[56.25%]"><img src={imageUrl} alt={alt} className="absolute inset-0 w-full h-full object-cover" /></div> );
