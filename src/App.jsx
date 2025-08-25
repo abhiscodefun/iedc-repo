@@ -268,7 +268,7 @@ const ContentSection = ({ openGallery, onImageClick, openTechtronixForm }) => (
 
 // --- Dynamic Event Data ---
 const getEventDate = (daysFromNow) => {
-  const date = new Date('2025-08-24T12:00:00'); // Base date for consistency
+  const date = new Date('2025-08-25T12:00:00'); // Base date for consistency
   date.setDate(date.getDate() + daysFromNow);
   return {
     day: date.getDate().toString(),
@@ -295,6 +295,7 @@ const UpcomingEventsSection = ({ onImageClick, openTechtronixForm }) => {
             slidesPerView={'auto'}
             centeredSlides={true}
             noSwipingClass="no-swipe"
+            touchRatio={1.5}
             pagination={{ el: '.swiper-pagination-custom', clickable: true, type: 'progressbar' }} 
             breakpoints={{ 
               768: { slidesPerView: 2, centeredSlides: false }, 
@@ -447,6 +448,7 @@ const GallerySection = ({ openGallery }) => (
           centeredSlides={true}
           spaceBetween={15} 
           slidesPerView={'auto'}
+          touchRatio={1.5}
           pagination={{ el: '.gallery-pagination', clickable: true }} 
           breakpoints={{ 
             768: { slidesPerView: 2, spaceBetween: 20, centeredSlides: false },
@@ -580,7 +582,6 @@ const WaveBackground = ({ isloading }) => (
         background-color: rgba(0, 0, 0, 0.7);
       }
       
-      /* ✨ FIX: Vertically center image in fullscreen gallery */
       .fullscreen-gallery .swiper-slide {
         height: 100%;
       }
@@ -782,8 +783,8 @@ const TeamMemberCard = ({ name, role, imageUrl }) => (
 );
 
 const GalleryImage = ({ imageUrl, alt }) => (
-  <div className="relative overflow-hidden rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 pb-[56.25%]">
-    <img src={imageUrl} alt={alt} className="absolute inset-0 w-full h-full object-cover" />
+  <div className="relative overflow-hidden rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 pb-[56.25%] bg-black">
+    <img src={imageUrl} alt={alt} className="absolute inset-0 w-full h-full object-contain" />
   </div>
 );
 
