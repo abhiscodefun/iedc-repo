@@ -497,8 +497,7 @@ const WaveBackground = ({ isloading }) => (
         position: relative;
         padding: 2px; 
         overflow: hidden;
-        border-radius: 0.6rem; 
-        background-color: #f3f4f6; /* Added bg-gray-100 */
+        border-radius: 0.6rem;
       }
       .animated-outline::before {
         content: '';
@@ -507,7 +506,8 @@ const WaveBackground = ({ isloading }) => (
         left: -50%;
         width: 200%;
         height: 200%;
-        z-index: -1; /* Set to -1 to be behind the content */
+        z-index: 1;
+        pointer-events: none; /* ✨ This allows clicks to "pass through" the animation */
         background: conic-gradient(
           transparent,
           rgba(59, 130, 246, 0.9),
@@ -658,7 +658,7 @@ const EventCard = ({ title, date, imageUrl, altText, description, onImageClick, 
       {title === "Techtronix" && (
         <div className="mt-auto pt-4">
           <div className="animated-outline">
-            <div className="bg-gray-100 rounded-lg p-3 flex flex-col sm:flex-row items-center justify-between gap-4 relative">
+            <div className="bg-gray-100 rounded-lg p-3 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-20">
               <div 
                 className="relative w-24 h-24 sm:w-20 sm:h-20 flex-shrink-0 cursor-pointer no-swipe"
                 onClick={(e) => {
@@ -830,7 +830,7 @@ const FullScreenGallery = ({ images, startIndex, onClose }) => {
 };
 
 
-const WhatsAppButton = () => {
+const WhatsAppButton = ({}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
   const phoneNumber = '918778944493';
