@@ -3,15 +3,17 @@ import React, { useRef, useState, useEffect } from 'react';
 
 // ✨ Swiper component imports
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
 
 // ✨ Swiper CSS imports
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 // --- Asset Imports ---
 import ideathonEventImg from './assets/new_events_ideathon.png';
 import techtronixEventImg from './assets/new_events_techtronix.png';
+import techtronixDetailImg from './assets/new_events_techtronix_01.png';
 import gamingEventImg from './assets/new_events_gaming.png';
 import funEventImg from './assets/new_events_fun.png';
 import nodalOfficer1Img from './assets/nod_off1.jpg';
@@ -116,7 +118,7 @@ const MainApp = ({ navigate, currentPage }) => {
 
   return (
     <>
-      <div className="bg-gray-100 font-sans antialiased animate-fade-in pb-28" style={{ fontFamily: "'Poppins', sans-serif" }}>
+      <div className="bg-gray-100 font-sans antialiased animate-fade-in" style={{ fontFamily: "'Poppins', sans-serif" }}>
         <AnnouncementBanner />
         <HeroSection onJoinClick={handleScrollToJoin} navigate={navigate} currentPage={currentPage} />
         <ContentSection openGallery={openGallery} onImageClick={openUpdateImage} />
@@ -153,7 +155,7 @@ const LoadingScreen = ({ isExiting }) => {
   return (
     <div className={`relative h-screen w-screen flex items-center justify-center overflow-hidden bg-[#000411] transition-opacity duration-500 ${isExiting ? 'opacity-0' : 'opacity-100'}`}>
       <WaveBackground isloading="true" />
-      <div className="relative w-full max-w-lg h-48">
+      <div className="relative w-full max-w-lg h-48 px-4">
         <svg viewBox="0 0 500 100" className="absolute inset-0 w-full h-full">
           <g className={`circuit-bg ${startAnimation ? 'animate' : ''}`}>
             <path d="M 0 10 H 500" />
@@ -165,7 +167,6 @@ const LoadingScreen = ({ isExiting }) => {
             <path d="M 450 10 V 90" />
             <path d="M 20 50 H 480" />
           </g>
-          {/* Use SVG text with a custom font and animate each character */}
           <text x="50%" y="55%" dy=".1em" textAnchor="middle" className="loading-text">
             {text.split("").map((char, index) => (
               <tspan 
@@ -252,7 +253,7 @@ const HeroSection = ({ onJoinClick, navigate, currentPage }) => {
 
 const ContentSection = ({ openGallery, onImageClick }) => (
   <>
-    <UpcomingEventsSection />
+    <UpcomingEventsSection onImageClick={onImageClick} />
     <LatestUpdatesSection onImageClick={onImageClick} />
     <TestimonialsSection />
     <TeamSection />
@@ -277,7 +278,7 @@ const eventsData = [
   { title: "Fun Events", date: getEventDate(14), imageUrl: funEventImg, altText: "People collaborating", description: "Stay tuned for more exciting and fun-filled events coming your way!" }
 ];
 
-const UpcomingEventsSection = () => {
+const UpcomingEventsSection = ({ onImageClick }) => {
   return (
     <div className="bg-white py-12 sm:py-16">
       <div className="max-w-6xl mx-auto px-6 overflow-hidden">
@@ -285,8 +286,8 @@ const UpcomingEventsSection = () => {
         <div className="mt-12">
           <Swiper modules={[Pagination]} spaceBetween={20} slidesPerView={1.2} pagination={{ el: '.swiper-pagination-custom', clickable: true, type: 'progressbar' }} breakpoints={{ 768: { slidesPerView: 2, spaceBetween: 30 }, 1024: { slidesPerView: 3, spaceBetween: 30 } }} className="!pb-4">
             {eventsData.map(event => (
-              <SwiperSlide key={event.title} className="h-auto">
-                <EventCard {...event} />
+              <SwiperSlide key={event.title} className="h-auto cursor-grab">
+                <EventCard {...event} onImageClick={onImageClick} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -334,41 +335,37 @@ const LatestUpdatesSection = ({ onImageClick }) => (
 );
 
 const testimonialsData = [
-  { quote: "The IEDC session was informative and motivating. It gave a clear overview of entrepreneurship, innovation, and startup opportunities. The session encouraged creative thinking and inspired us to explore new ideas. Overall, it was a valuable and engaging experience.", name: "Santhwana CR", role: "2nd Year, Ahalia Nursing College", imageUrl: "https://images.unsplash.com/photo-1517841905240-472-un-photo.jpg" },
-  { quote: "Being part of IEDC has been a turning point in my journey. It gave me the platform to explore beyond academics and discover my true potential. Through IEDC, I was able to build essential skills like communication, leadership, and teamwork. IEDC ASET has truly been the launchpad for my confidence and career.", name: "Vishnu VS", role: "Student Lead, IEDC ASET", imageUrl: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500&auto=format&fit=crop&q=60" },
-  { quote: "Being the Student Lead of IEDC I was able to try new things, meet amazing people, and push myself beyond academics. It helped me improve my communication, leadership, teamwork, and even made me a more confident speaker. More than that, it gave me the belief in myself and the courage to take steps toward my career.", name: "Saniya Fathima A", role: "Student Lead, IEDC ASET", imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60" }
+  { id: 1, quote: "The IEDC session was informative and motivating. It gave a clear overview of entrepreneurship, innovation, and startup opportunities. The session encouraged creative thinking and inspired us to explore new ideas. Overall, it was a valuable and engaging experience.", name: "Santhwana CR", role: "2nd Year, Ahalia Nursing College" },
+  { id: 2, quote: "Being part of IEDC has been a turning point in my journey. It gave me the platform to explore beyond academics and discover my true potential. Through IEDC, I was able to build essential skills like communication, leadership, and teamwork. IEDC ASET has truly been the launchpad for my confidence and career.", name: "Vishnu VS", role: "Student Lead, IEDC ASET" },
+  { id: 3, quote: "Being the Student Lead of IEDC I was able to try new things, meet amazing people, and push myself beyond academics. It helped me improve my communication, leadership, teamwork, and even made me a more confident speaker. More than that, it gave me the belief in myself and the courage to take steps toward my career.", name: "Saniya Fathima A", role: "Student Lead, IEDC ASET" }
 ];
 
 const TestimonialsSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFading, setIsFading] = useState(false);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsFading(true);
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % testimonialsData.length);
-        setIsFading(false);
-      }, 500);
-    }, 7000);
-    return () => clearInterval(interval);
-  }, []);
-  const currentTestimonial = testimonialsData[currentIndex];
   return (
     <div className="bg-white py-12 sm:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <SectionTitle title="What Our Members Say" />
-        <div className="mt-16 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200 w-full max-w-2xl mx-auto relative min-h-48 flex items-center justify-center">
-            <div className={`transition-opacity duration-500 w-full ${isFading ? 'opacity-0' : 'opacity-100'}`}>
-              <p className="text-gray-600 italic text-center">"{currentTestimonial.quote}"</p>
-              <div className="mt-6 flex items-center justify-center">
-                <div className="text-left ml-4">
-                  <p className="font-bold text-gray-900">{currentTestimonial.name}</p>
-                  <p className="text-sm text-gray-500">{currentTestimonial.role}</p>
+        <div className="mt-12 relative">
+          <Swiper
+            modules={[Navigation]}
+            navigation
+            spaceBetween={30}
+            slidesPerView={1}
+            className="!pb-12"
+            loop={true}
+          >
+            {testimonialsData.map(testimonial => (
+              <SwiperSlide key={testimonial.id}>
+                <div className="bg-white p-8 rounded-lg w-full max-w-2xl mx-auto text-center">
+                    <p className="text-gray-600 italic">"{testimonial.quote}"</p>
+                    <div className="mt-6">
+                      <p className="font-bold text-gray-900">{testimonial.name}</p>
+                      <p className="text-sm text-gray-500">{testimonial.role}</p>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
     </div>
@@ -427,7 +424,15 @@ const GallerySection = ({ openGallery }) => (
     <div className="max-w-6xl mx-auto px-6 overflow-hidden">
       <SectionTitle title="Gallery" />
       <div className="mt-12">
-        <Swiper modules={[Pagination]} spaceBetween={15} slidesPerView={1.5} pagination={{ el: '.gallery-pagination', clickable: true }} breakpoints={{ 640: { slidesPerView: 2.5, spaceBetween: 20 }, 1024: { slidesPerView: 3, spaceBetween: 20 } }} className="!pb-12" >
+        <Swiper 
+          modules={[Pagination, Navigation]} 
+          navigation
+          spaceBetween={15} 
+          slidesPerView={1.5} 
+          pagination={{ el: '.gallery-pagination', clickable: true }} 
+          breakpoints={{ 640: { slidesPerView: 2.5, spaceBetween: 20 }, 1024: { slidesPerView: 3, spaceBetween: 20 } }} 
+          className="!pb-12" 
+        >
           {galleryImages.map((img, index) => (
             <SwiperSlide key={img.id}>
               <div onClick={() => openGallery(index)} className="cursor-pointer">
@@ -459,6 +464,34 @@ const WaveBackground = ({ isloading }) => (
       .animate-fade-in-pop { animation: fade-in-pop 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
       @keyframes fade-in-scale-up { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
       .animate-fade-in-scale-up { animation: fade-in-scale-up 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+
+      /* ✨ NEW: Animation for looping outline */
+      @keyframes rotate-outline {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .animated-outline {
+        position: relative;
+        padding: 2px; /* This controls the border thickness */
+        overflow: hidden;
+        border-radius: 0.6rem; /* Should be slightly larger than the inner element's radius */
+      }
+      .animated-outline::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        z-index: 1;
+        background: conic-gradient(
+          transparent,
+          rgba(59, 130, 246, 0.9),
+          transparent 25%
+        );
+        animation: rotate-outline 4s linear infinite;
+      }
+
 
       /* Loading Screen */
       .circuit-bg { stroke: rgba(59, 130, 246, 0.25); stroke-width: 1; opacity: 0; }
@@ -497,6 +530,33 @@ const WaveBackground = ({ isloading }) => (
       .swiper-slide { height: auto; }
       .gallery-pagination .swiper-pagination-bullet { background-color: #9CA3AF; opacity: 1; transition: all 0.2s ease-in-out; }
       .gallery-pagination .swiper-pagination-bullet-active { background-color: #3B82F6; transform: scale(1.25); }
+
+      /* Swiper Navigation Arrows */
+      .swiper-button-next, .swiper-button-prev {
+        color: #3B82F6;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        transition: background-color 0.2s;
+      }
+      .swiper-button-next:hover, .swiper-button-prev:hover {
+        background-color: rgba(255, 255, 255, 1);
+      }
+      .swiper-button-next::after, .swiper-button-prev::after {
+        font-size: 1.25rem;
+        font-weight: 800;
+      }
+
+      .fullscreen-gallery .swiper-button-next,
+      .fullscreen-gallery .swiper-button-prev {
+        color: #FFFFFF;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+      .fullscreen-gallery .swiper-button-next:hover,
+      .fullscreen-gallery .swiper-button-prev:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+      }
     `}</style>
     {!isloading && (
       <>
@@ -551,7 +611,8 @@ const SectionTitle = ({ title }) => (
   </div>
 );
 
-const EventCard = ({ title, date, imageUrl, altText, description }) => (
+// ✨ MODIFIED: Reworked the Techtronix card to have a looping outline
+const EventCard = ({ title, date, imageUrl, altText, description, onImageClick }) => (
   <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 group flex flex-col h-full">
     <div className="relative">
       <div className="w-full h-64 bg-gray-100 flex items-center justify-center">
@@ -566,6 +627,24 @@ const EventCard = ({ title, date, imageUrl, altText, description }) => (
     <div className="p-6 flex-grow flex flex-col">
       <h4 className="text-2xl font-bold text-gray-900">{title}</h4>
       <p className="mt-2 text-gray-600 flex-grow">{description}</p>
+      
+      {title === "Techtronix" && (
+        <div className="mt-auto pt-4">
+          <div className="animated-outline">
+            <div className="bg-white rounded-lg p-2 flex items-center justify-between gap-4 relative z-20">
+              <img
+                src={techtronixDetailImg}
+                alt="Techtronix details"
+                className="w-20 h-20 object-cover rounded-md cursor-pointer transform hover:scale-105 transition-transform"
+                onClick={() => onImageClick(techtronixDetailImg)}
+              />
+              <button className="bg-black text-white font-semibold py-3 px-5 rounded-lg">
+                Register Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   </div>
 );
@@ -665,36 +744,48 @@ const GalleryImage = ({ imageUrl, alt }) => (
 );
 
 const FullScreenGallery = ({ images, startIndex, onClose }) => {
-  const [activeIndex, setActiveIndex] = useState(startIndex);
-
-  useEffect(() => { document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = 'unset'; }; }, []);
-
-  const goNext = (e) => { e.stopPropagation(); setActiveIndex((prev) => (prev + 1) % images.length); };
-  const goPrev = (e) => { e.stopPropagation(); setActiveIndex((prev) => (prev - 1 + images.length) % images.length); };
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
-      else if (e.key === 'ArrowRight') goNext(e);
-      else if (e.key === 'ArrowLeft') goPrev(e);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose, images.length]);
+  }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose} >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm fullscreen-gallery" onClick={onClose}>
       <button onClick={onClose} className="absolute top-4 right-4 z-[51] text-white text-2xl bg-black/60 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black transition-colors">&times;</button>
-      <button onClick={goPrev} className="absolute left-4 top-1/2 -translate-y-1/2 z-[51] bg-black/40 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/70 transition-colors text-2xl">&lt;</button>
-      <button onClick={goNext} className="absolute right-4 top-1/2 -translate-y-1/2 z-[51] bg-black/40 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/70 transition-colors text-2xl">&gt;</button>
-      <div className="relative w-full max-w-5xl h-[80vh]" onClick={(e) => e.stopPropagation()}>
-        {images.map((img, index) => (
-          <img key={img.id || index} src={img.imageUrl} alt={img.alt} className={`w-full h-full object-contain absolute transition-opacity duration-300 ${index === activeIndex ? 'opacity-100' : 'opacity-0'}`} />
-        ))}
+      
+      {/* ✨ MODIFIED: Removed padding from this container div */}
+      <div className="w-full h-full" onClick={(e) => e.stopPropagation()}>
+        <Swiper
+          modules={[Navigation]}
+          navigation
+          initialSlide={startIndex}
+          spaceBetween={50}
+          slidesPerView={1}
+          className="w-full h-full"
+          loop={images.length > 1}
+        >
+          {images.map((img, index) => (
+            // ✨ MODIFIED: Added centering classes and padding directly to the slide
+            <SwiperSlide key={img.id || index} className="flex items-center justify-center p-6">
+              <img src={img.imageUrl} alt={img.alt} className="max-w-full max-h-full object-contain" />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );
 };
+
 
 const WhatsAppButton = () => {
   const [isOpen, setIsOpen] = useState(false);
