@@ -95,6 +95,7 @@ const MainApp = ({ navigate, currentPage }) => {
   const joinSectionRef = useRef(null);
   const [galleryState, setGalleryState] = useState({ isOpen: false, startIndex: 0 });
   const [updateImage, setUpdateImage] = useState(null);
+  const [isTechtronixFormOpen, setIsTechtronixFormOpen] = useState(false);
 
   const handleScrollToJoin = () => {
     joinSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -116,12 +117,15 @@ const MainApp = ({ navigate, currentPage }) => {
     setUpdateImage(null);
   };
 
+  const openTechtronixForm = () => setIsTechtronixFormOpen(true);
+  const closeTechtronixForm = () => setIsTechtronixFormOpen(false);
+
   return (
     <>
       <div className="bg-gray-100 font-sans antialiased animate-fade-in" style={{ fontFamily: "'Poppins', sans-serif" }}>
         <AnnouncementBanner />
         <HeroSection onJoinClick={handleScrollToJoin} navigate={navigate} currentPage={currentPage} />
-        <ContentSection openGallery={openGallery} onImageClick={openUpdateImage} />
+        <ContentSection openGallery={openGallery} onImageClick={openUpdateImage} openTechtronixForm={openTechtronixForm} />
         <div ref={joinSectionRef} className="bg-white py-12 sm:py-16">
           <JoinSection />
         </div>
@@ -135,6 +139,7 @@ const MainApp = ({ navigate, currentPage }) => {
           onClose={closeUpdateImage}
         />
       )}
+      {isTechtronixFormOpen && <TechtronixJoinPopup onClose={closeTechtronixForm} />}
       <WhatsAppButton />
     </>
   );
@@ -251,9 +256,9 @@ const HeroSection = ({ onJoinClick, navigate, currentPage }) => {
 };
 
 
-const ContentSection = ({ openGallery, onImageClick }) => (
+const ContentSection = ({ openGallery, onImageClick, openTechtronixForm }) => (
   <>
-    <UpcomingEventsSection onImageClick={onImageClick} />
+    <UpcomingEventsSection onImageClick={onImageClick} openTechtronixForm={openTechtronixForm} />
     <LatestUpdatesSection onImageClick={onImageClick} />
     <TestimonialsSection />
     <TeamSection />
@@ -278,16 +283,28 @@ const eventsData = [
   { title: "Fun Events", date: getEventDate(14), imageUrl: funEventImg, altText: "People collaborating", description: "Stay tuned for more exciting and fun-filled events coming your way!" }
 ];
 
-const UpcomingEventsSection = ({ onImageClick }) => {
+const UpcomingEventsSection = ({ onImageClick, openTechtronixForm }) => {
   return (
     <div className="bg-white py-12 sm:py-16">
-      <div className="max-w-6xl mx-auto px-6 overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6">
         <SectionTitle title="Upcoming Events" />
         <div className="mt-12">
-          <Swiper modules={[Pagination]} spaceBetween={20} slidesPerView={1.2} pagination={{ el: '.swiper-pagination-custom', clickable: true, type: 'progressbar' }} breakpoints={{ 768: { slidesPerView: 2, spaceBetween: 30 }, 1024: { slidesPerView: 3, spaceBetween: 30 } }} className="!pb-4">
+          <Swiper 
+            modules={[Pagination]} 
+            spaceBetween={20} 
+            slidesPerView={'auto'}
+            centeredSlides={true}
+            noSwipingClass="no-swipe"
+            pagination={{ el: '.swiper-pagination-custom', clickable: true, type: 'progressbar' }} 
+            breakpoints={{ 
+              768: { slidesPerView: 2, centeredSlides: false }, 
+              1024: { slidesPerView: 3, centeredSlides: false }  
+            }} 
+            className="!pb-4"
+          >
             {eventsData.map(event => (
-              <SwiperSlide key={event.title} className="h-auto cursor-grab">
-                <EventCard {...event} onImageClick={onImageClick} />
+              <SwiperSlide key={event.title} className="h-auto cursor-grab w-5/6 md:w-auto">
+                <EventCard {...event} onImageClick={onImageClick} openTechtronixForm={openTechtronixForm} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -355,7 +372,7 @@ const TestimonialsSection = () => {
             loop={true}
           >
             {testimonialsData.map(testimonial => (
-              <SwiperSlide key={testimonial.id}>
+              <SwiperSlide key={testimonial.id} className="cursor-grab">
                 <div className="bg-white p-8 rounded-lg w-full max-w-2xl mx-auto text-center">
                     <p className="text-gray-600 italic">"{testimonial.quote}"</p>
                     <div className="mt-6">
@@ -421,20 +438,24 @@ const galleryImages = [
 
 const GallerySection = ({ openGallery }) => (
   <div className="bg-white py-12 sm:py-16">
-    <div className="max-w-6xl mx-auto px-6 overflow-hidden">
+    <div className="max-w-6xl mx-auto px-6">
       <SectionTitle title="Gallery" />
       <div className="mt-12">
         <Swiper 
           modules={[Pagination, Navigation]} 
           navigation
+          centeredSlides={true}
           spaceBetween={15} 
-          slidesPerView={1.5} 
+          slidesPerView={'auto'}
           pagination={{ el: '.gallery-pagination', clickable: true }} 
-          breakpoints={{ 640: { slidesPerView: 2.5, spaceBetween: 20 }, 1024: { slidesPerView: 3, spaceBetween: 20 } }} 
+          breakpoints={{ 
+            768: { slidesPerView: 2, spaceBetween: 20, centeredSlides: false },
+            1024: { slidesPerView: 3, spaceBetween: 20, centeredSlides: false } 
+          }} 
           className="!pb-12" 
         >
           {galleryImages.map((img, index) => (
-            <SwiperSlide key={img.id}>
+            <SwiperSlide key={img.id} className="w-5/6 md:w-auto">
               <div onClick={() => openGallery(index)} className="cursor-pointer">
                 <GalleryImage imageUrl={img.imageUrl} alt={img.alt} />
               </div>
@@ -465,16 +486,17 @@ const WaveBackground = ({ isloading }) => (
       @keyframes fade-in-scale-up { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
       .animate-fade-in-scale-up { animation: fade-in-scale-up 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
 
-      /* ✨ NEW: Animation for looping outline */
+      /* Animation for looping outline */
       @keyframes rotate-outline {
         from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
       }
       .animated-outline {
         position: relative;
-        padding: 2px; /* This controls the border thickness */
+        padding: 2px; 
         overflow: hidden;
-        border-radius: 0.6rem; /* Should be slightly larger than the inner element's radius */
+        border-radius: 0.6rem; 
+        background-color: #f3f4f6; /* Added bg-gray-100 */
       }
       .animated-outline::before {
         content: '';
@@ -483,7 +505,7 @@ const WaveBackground = ({ isloading }) => (
         left: -50%;
         width: 200%;
         height: 200%;
-        z-index: 1;
+        z-index: -1; /* Set to -1 to be behind the content */
         background: conic-gradient(
           transparent,
           rgba(59, 130, 246, 0.9),
@@ -557,6 +579,11 @@ const WaveBackground = ({ isloading }) => (
       .fullscreen-gallery .swiper-button-prev:hover {
         background-color: rgba(0, 0, 0, 0.7);
       }
+      
+      /* ✨ FIX: Vertically center image in fullscreen gallery */
+      .fullscreen-gallery .swiper-slide {
+        height: 100%;
+      }
     `}</style>
     {!isloading && (
       <>
@@ -593,8 +620,8 @@ const TopNavigation = ({ navigate, currentPage }) => (
 
 const HeroText = ({ isVisible }) => (
   <div className={`text-center transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-    <h1 className="text-black text-6xl md:text-8xl font-thin tracking-[0.2em]">DIVE</h1>
-    <h2 className="text-black text-3xl md:text-5xl font-extrabold tracking-wider mt-2">INTO THE OCEAN OF IDEAS</h2>
+    <h1 className="text-black text-5xl sm:text-6xl md:text-8xl font-thin tracking-[0.2em]">DIVE</h1>
+    <h2 className="text-black text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-wider mt-2">INTO THE OCEAN OF IDEAS</h2>
   </div>
 );
 
@@ -611,8 +638,7 @@ const SectionTitle = ({ title }) => (
   </div>
 );
 
-// ✨ MODIFIED: Reworked the Techtronix card to have a looping outline
-const EventCard = ({ title, date, imageUrl, altText, description, onImageClick }) => (
+const EventCard = ({ title, date, imageUrl, altText, description, onImageClick, openTechtronixForm }) => (
   <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 group flex flex-col h-full">
     <div className="relative">
       <div className="w-full h-64 bg-gray-100 flex items-center justify-center">
@@ -631,14 +657,32 @@ const EventCard = ({ title, date, imageUrl, altText, description, onImageClick }
       {title === "Techtronix" && (
         <div className="mt-auto pt-4">
           <div className="animated-outline">
-            <div className="bg-white rounded-lg p-2 flex items-center justify-between gap-4 relative z-20">
-              <img
-                src={techtronixDetailImg}
-                alt="Techtronix details"
-                className="w-20 h-20 object-cover rounded-md cursor-pointer transform hover:scale-105 transition-transform"
-                onClick={() => onImageClick(techtronixDetailImg)}
-              />
-              <button className="bg-black text-white font-semibold py-3 px-5 rounded-lg">
+            <div className="bg-gray-100 rounded-lg p-3 flex flex-col sm:flex-row items-center justify-between gap-4 relative">
+              <div 
+                className="relative w-24 h-24 sm:w-20 sm:h-20 flex-shrink-0 cursor-pointer no-swipe"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onImageClick(techtronixDetailImg);
+                }}
+              >
+                <img
+                  src={techtronixDetailImg}
+                  alt="Techtronix details"
+                  className="w-full h-full object-cover rounded-md"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5" />
+                  </svg>
+                </div>
+              </div>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openTechtronixForm();
+                }}
+                className="bg-black text-white font-semibold py-3 px-5 rounded-lg w-full sm:w-auto no-swipe"
+              >
                 Register Now
               </button>
             </div>
@@ -732,8 +776,8 @@ const JoinSection = () => {
 const TeamMemberCard = ({ name, role, imageUrl }) => (
   <div className="flex flex-col items-center">
     <img src={imageUrl} alt={name} className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover shadow-md" />
-    <h4 className="mt-4 text-lg font-bold text-gray-900">{name}</h4>
-    <p className="text-gray-700 font-semibold text-sm">{role}</p>
+    <h4 className="mt-4 text-base sm:text-lg font-bold text-gray-900">{name}</h4>
+    <p className="text-gray-700 font-semibold text-xs sm:text-sm">{role}</p>
   </div>
 );
 
@@ -763,7 +807,6 @@ const FullScreenGallery = ({ images, startIndex, onClose }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm fullscreen-gallery" onClick={onClose}>
       <button onClick={onClose} className="absolute top-4 right-4 z-[51] text-white text-2xl bg-black/60 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black transition-colors">&times;</button>
       
-      {/* ✨ MODIFIED: Removed padding from this container div */}
       <div className="w-full h-full" onClick={(e) => e.stopPropagation()}>
         <Swiper
           modules={[Navigation]}
@@ -775,7 +818,6 @@ const FullScreenGallery = ({ images, startIndex, onClose }) => {
           loop={images.length > 1}
         >
           {images.map((img, index) => (
-            // ✨ MODIFIED: Added centering classes and padding directly to the slide
             <SwiperSlide key={img.id || index} className="flex items-center justify-center p-6">
               <img src={img.imageUrl} alt={img.alt} className="max-w-full max-h-full object-contain" />
             </SwiperSlide>
@@ -874,6 +916,76 @@ const TshirtAdPopup = ({ onClose, onKnowMore }) => {
     </div>
   );
 };
+
+const TechtronixJoinPopup = ({ onClose }) => {
+  const [formData, setFormData] = useState({ NAME: '', YEAR: '', BRANCH: '', 'CONTACT NUMBER': '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value }); };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // ⚠️ IMPORTANT: Replace this URL with the one for your new Google Sheet script for Techtronix registrations.
+    const scriptURL = 'https://script.google.com/macros/s/YOUR_NEW_GOOGLE_SHEETS_SCRIPT_URL_HERE/exec'; 
+    const form = new FormData();
+    for (const key in formData) { form.append(key, formData[key]); }
+    fetch(scriptURL, { method: 'POST', body: form })
+      .catch(error => console.error('Google Sheets API Error!', error.message));
+    setTimeout(() => {
+      setIsSubmitted(true);
+      setIsSubmitting(false);
+    }, 500);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in" style={{animationDuration: '0.3s'}}>
+      <div className="relative bg-white w-full max-w-lg mx-auto rounded-2xl shadow-2xl overflow-hidden animate-fade-in-scale-up">
+        <button onClick={onClose} className="absolute top-3 right-3 z-10 text-gray-400 hover:text-gray-800 transition-colors">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+        <div className="p-8 md:p-10">
+          {!isSubmitted ? (
+            <>
+              <div className="text-center">
+                <h2 className="text-sm font-bold uppercase tracking-widest text-blue-600">Hands-on Workshop</h2>
+                <h3 className="mt-2 text-3xl font-extrabold text-gray-900">Register for Techtronix</h3>
+              </div>
+              <form onSubmit={handleSubmit} className="mt-8 w-full space-y-5">
+                <input type="text" name="NAME" placeholder="Full Name" value={formData.NAME} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
+                <input type="text" name="YEAR" placeholder="Year of Study" value={formData.YEAR} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
+                <input type="text" name="BRANCH" placeholder="Branch" value={formData.BRANCH} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
+                <input type="tel" name="CONTACT NUMBER" placeholder="Contact Number" value={formData['CONTACT NUMBER']} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
+                <div className="text-center pt-2">
+                  <button type="submit" disabled={isSubmitting} className="w-full bg-gray-900 text-white font-bold py-4 px-12 rounded-lg hover:bg-black transform hover:scale-105 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    {isSubmitting ? 'Submitting...' : 'SUBMIT REGISTRATION'}
+                  </button>
+                </div>
+              </form>
+            </>
+          ) : (
+            <div className="text-center animate-fade-in-pop py-10">
+              <svg className="w-24 h-24 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <h3 className="mt-6 text-3xl font-bold text-gray-800">Registration Complete!</h3>
+              <p className="mt-3 text-lg text-gray-600">Thank you for registering. We've received your details.</p>
+              <p className="mt-1 text-gray-500">You're one step closer to the world of robotics!</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 const TshirtPage = ({ navigate, currentPage }) => {
   const [formData, setFormData] = useState({ NAME: '', BRANCH: '', YEAR: '', 'TSHIRT SIZE': 'M', 'CONTACT NUMBER': '' });
