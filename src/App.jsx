@@ -1,5 +1,6 @@
 // ✨ Remember to run: npm install swiper
 import React, { useRef, useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
 // ✨ Swiper component imports
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -27,7 +28,7 @@ import ex06Img from './assets/ex_06.jpg';
 import ex07Img from './assets/ex_07.jpg';
 import ex08Img from './assets/ex_08.jpg';
 import ex09Img from './assets/ex_09.jpg';
-import ex10nsImg from './assets/ex_10_ns.png';
+import ex10nsImg from './assets/ex_10_ns.jpg';
 import galleryPic1 from './assets/pics_01.jpg';
 import galleryPic2 from './assets/pics_02.jpg';
 import galleryPic3 from './assets/pics_03.jpg';
@@ -39,6 +40,9 @@ import galleryPic8 from './assets/pics_08.jpg';
 import galleryPic9 from './assets/pics_09.jpg';
 import eventsFdpImg from './assets/events_fdp.jpg';
 import tshirtAdVideo from './assets/tshirt_ad.mp4';
+
+// --- Import TopNavigation with logos ---
+import TopNavigation from './components/layout/TopNavigation';
 
 
 // --- Main App Component ---
@@ -293,7 +297,6 @@ const UpcomingEventsSection = ({ onImageClick, openTechtronixForm }) => {
             modules={[Pagination]} 
             spaceBetween={20} 
             slidesPerView={'auto'}
-            centeredSlides={true}
             noSwipingClass="no-swipe"
             touchRatio={1.5}
             pagination={{ el: '.swiper-pagination-custom', clickable: true, type: 'progressbar' }} 
@@ -360,7 +363,7 @@ const testimonialsData = [
 
 const TestimonialsSection = () => {
   return (
-    <div className="bg-white py-12 sm:py-16">
+    <div className="bg-gray-50 py-12 sm:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <SectionTitle title="What Our Members Say" />
         <div className="mt-12 relative">
@@ -374,12 +377,20 @@ const TestimonialsSection = () => {
           >
             {testimonialsData.map(testimonial => (
               <SwiperSlide key={testimonial.id} className="cursor-grab">
-                <div className="bg-white p-8 rounded-lg w-full max-w-2xl mx-auto text-center">
-                    <p className="text-gray-600 italic">"{testimonial.quote}"</p>
-                    <div className="mt-6">
-                      <p className="font-bold text-gray-900">{testimonial.name}</p>
-                      <p className="text-sm text-gray-500">{testimonial.role}</p>
-                    </div>
+                <div className="bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100 w-full max-w-3xl mx-auto text-center transform hover:scale-105 transition-all duration-300 ease-in-out hover:shadow-2xl">
+                  <div className="relative">
+                    <svg className="absolute -top-2 -left-2 w-8 h-8 text-blue-500 opacity-20" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
+                    </svg>
+                    <p className="text-gray-700 italic text-lg leading-relaxed">"{testimonial.quote}"</p>
+                    <svg className="absolute -bottom-2 -right-2 w-8 h-8 text-blue-500 opacity-20 transform rotate-180" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
+                    </svg>
+                  </div>
+                  <div className="mt-8 pt-6 border-t border-gray-100">
+                    <p className="font-bold text-gray-900 text-xl">{testimonial.name}</p>
+                    <p className="text-sm text-blue-600 font-medium mt-1">{testimonial.role}</p>
+                  </div>
                 </div>
               </SwiperSlide>
             ))}
@@ -405,7 +416,7 @@ const teamData = {
     { name: "Irin Ranju", role: "Women & Entrepreneurship Lead", imageUrl: ex07Img },
     { name: "Adhoeeba Sherin", role: "Finance Lead", imageUrl: ex08Img },
     { name: "Afrah Fathima", role: "Marketing Lead", imageUrl: ex09Img },
-    { name: "{in progress..}", role: "IPR & Research Lead", imageUrl: ex10nsImg }
+    { name: "Akshara", role: "IPR & Research Lead", imageUrl: ex10nsImg }
   ]
 };
 
@@ -442,23 +453,24 @@ const GallerySection = ({ openGallery }) => (
     <div className="max-w-6xl mx-auto px-6">
       <SectionTitle title="Gallery" />
       <div className="mt-12">
-        <Swiper 
-          modules={[Pagination, Navigation]} 
+        <Swiper
+          modules={[Pagination, Navigation]}
           navigation
-          centeredSlides={true}
-          spaceBetween={15} 
-          slidesPerView={'auto'}
+          centeredSlides={false}
+          spaceBetween={16}
+          slidesPerView={1}
           touchRatio={1.5}
-          pagination={{ el: '.gallery-pagination', clickable: true }} 
-          breakpoints={{ 
-            768: { slidesPerView: 2, spaceBetween: 20, centeredSlides: false },
-            1024: { slidesPerView: 3, spaceBetween: 20, centeredSlides: false } 
-          }} 
-          className="!pb-12" 
+          pagination={{ el: '.gallery-pagination', clickable: true }}
+          breakpoints={{
+            640: { slidesPerView: 2, spaceBetween: 18 },
+            768: { slidesPerView: 3, spaceBetween: 20 },
+            1024: { slidesPerView: 4, spaceBetween: 24 }
+          }}
+          className="!pb-12"
         >
           {galleryImages.map((img, index) => (
-            <SwiperSlide key={img.id} className="w-5/6 md:w-auto">
-              <div onClick={() => openGallery(index)} className="cursor-pointer">
+            <SwiperSlide key={img.id} className="h-auto flex flex-col">
+              <div onClick={() => openGallery(index)} className="cursor-pointer h-full">
                 <GalleryImage imageUrl={img.imageUrl} alt={img.alt} />
               </div>
             </SwiperSlide>
@@ -612,12 +624,6 @@ const WaveBackground = ({ isloading }) => (
 );
 
 // --- Helper & UI Components ---
-const TopNavigation = ({ navigate, currentPage }) => (
-  <nav className="w-full flex justify-between items-center py-8">
-    <button onClick={() => navigate('home')} className={`font-semibold text-base pb-1 transition-colors ${currentPage === 'home' ? 'text-black border-b-2 border-black' : 'text-gray-500 hover:text-black'}`}>Home</button>
-    <button onClick={() => navigate('events')} className={`font-semibold text-base pb-1 transition-colors ${currentPage === 'events' ? 'text-black border-b-2 border-black' : 'text-gray-500 hover:text-black'}`}>Events</button>
-  </nav>
-);
 
 const HeroText = ({ isVisible }) => (
   <div className={`text-center transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
@@ -657,37 +663,15 @@ const EventCard = ({ title, date, imageUrl, altText, description, onImageClick, 
       
       {title === "Techtronix" && (
         <div className="mt-auto pt-4">
-          <div className="animated-outline">
-            <div className="bg-gray-100 rounded-lg p-3 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-20">
-              <div 
-                className="relative w-24 h-24 sm:w-20 sm:h-20 flex-shrink-0 cursor-pointer no-swipe"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onImageClick(techtronixDetailImg);
-                }}
-              >
-                <img
-                  src={techtronixDetailImg}
-                  alt="Techtronix details"
-                  className="w-full h-full object-cover rounded-md"
-                />
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5" />
-                  </svg>
-                </div>
-              </div>
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openTechtronixForm();
-                }}
-                className="bg-black text-white font-semibold py-3 px-5 rounded-lg w-full sm:w-auto no-swipe"
-              >
-                Register Now
-              </button>
-            </div>
-          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              openTechtronixForm();
+            }}
+            className="text-gray-600 hover:text-gray-800 font-semibold text-sm transition-colors no-swipe underline underline-offset-2"
+          >
+            I'm interested
+          </button>
         </div>
       )}
     </div>
@@ -929,7 +913,7 @@ const TechtronixJoinPopup = ({ onClose }) => {
     e.preventDefault();
     setIsSubmitting(true);
     // ⚠️ IMPORTANT: Replace this URL with the one for your new Google Sheet script for Techtronix registrations.
-    const scriptURL = 'https://script.google.com/macros/s/YOUR_NEW_GOOGLE_SHEETS_SCRIPT_URL_HERE/exec'; 
+    const scriptURL = 'https://script.google.com/macros/s/YOUR_NEW_GOOGLE_SHEETS_SCRIPT_URL_HERE/exec';
     const form = new FormData();
     for (const key in formData) { form.append(key, formData[key]); }
     fetch(scriptURL, { method: 'POST', body: form })
@@ -954,6 +938,16 @@ const TechtronixJoinPopup = ({ onClose }) => {
         <button onClick={onClose} className="absolute top-3 right-3 z-10 text-gray-400 hover:text-gray-800 transition-colors">
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
+
+        {/* Image at the top */}
+        <div className="w-full h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+          <img
+            src={techtronixDetailImg}
+            alt="Techtronix Workshop - Image showing robotics and hands-on work"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
         <div className="p-8 md:p-10">
           {!isSubmitted ? (
             <>
@@ -1014,6 +1008,7 @@ const TshirtPage = ({ navigate, currentPage }) => {
       <div className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-6">
           <TopNavigation navigate={navigate} currentPage={currentPage} />
+          {/* This already uses the correct imported TopNavigation */}
         </div>
       </div>
       <main className="max-w-6xl mx-auto px-6 py-12 sm:py-16">
@@ -1058,9 +1053,61 @@ const TshirtPage = ({ navigate, currentPage }) => {
   );
 };
 
-const Footer = () => (
-  <footer className="bg-gray-800 text-gray-400 py-6 text-center">
-    <p>&copy; IEDC ASET - All Rights reserved</p>
+const Footer = () =>(
+  <footer className="bg-gray-800 text-gray-300 py-12">
+    <div className="max-w-6xl mx-auto px-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+
+        {/* Contact Information */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-white mb-4">Contact Information</h3>
+          <div className="space-y-3">
+            <div className="flex items-center justify-center space-x-3 text-sm">
+              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <a href="mailto:iedc@aset.ac.in" className="hover:text-blue-400 transition-colors">iedc@aset.ac.in</a>
+            </div>
+            <div className="flex items-center justify-center space-x-3 text-sm">
+              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+              <span>Student Lead: <a href="mailto:vishnuvs@gmail.com" className="hover:text-blue-400 transition-colors">vishnuvs@aset.ac.in</a></span>
+            </div>
+            <div className="flex items-center justify-center space-x-3 text-sm">
+              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+              </svg>
+              <span>Nodal Officer: <a href="mailto:lakshmys@aset.ac.in" className="hover:text-blue-400 transition-colors">lakshmys@aset.ac.in</a></span>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Links */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-white mb-4">Quick Links</h3>
+          <div className="space-y-2 text-sm">
+            <div><a href="#" className="hover:text-blue-400 transition-colors">About IEDC</a></div>
+            <div><a href="#" className="hover:text-blue-400 transition-colors">Events</a></div>
+            <div><a href="#" className="hover:text-blue-400 transition-colors">Team</a></div>
+            <div><a href="#" className="hover:text-blue-400 transition-colors">Gallery</a></div>
+          </div>
+        </div>
+
+        {/* Logo and Copyright */}
+        <div className="space-y-4">
+          <div className="flex justify-center space-x-4">
+            <img src="/iedc_logo.jpg" alt="IEDC Logo" className="h-10" />
+            <img src="/aset_logo.jpg" alt="ASET Logo" className="h-10" />
+          </div>
+          <div className="text-center">
+            <p className="text-sm">&copy; 2025 IEDC ASET - All Rights Reserved</p>
+            <p className="text-xs mt-2 text-gray-500">Innovation and Entrepreneurship Development Cell</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </footer>
 );
 
