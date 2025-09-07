@@ -4,8 +4,8 @@ const TopNavigation = ({ navigate, currentPage }) => {
   return (
     <nav className="w-full flex justify-between items-center py-4">
       <div className="flex items-center space-x-4">
-        <img src="/iedc_logo.jpg" alt="IEDC Logo" className="h-12" />
-        <img src="/aset_logo.jpg" alt="ASET Logo" className="h-12" />
+        <img src="/iedc_logo.png" alt="IEDC Logo" className="h-12" />
+        <img src="/aset_logo.png" alt="ASET Logo" className="h-12" />
       </div>
       <div className="flex items-center space-x-8">
         <button

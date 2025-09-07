@@ -40,6 +40,7 @@ import galleryPic8 from './assets/pics_08.jpg';
 import galleryPic9 from './assets/pics_09.jpg';
 import eventsFdpImg from './assets/events_fdp.jpg';
 import tshirtAdVideo from './assets/tshirt_ad.mp4';
+import teamBackgroundVideo from './assets/team_background.mp4';
 
 // --- Import TopNavigation with logos ---
 import TopNavigation from './components/layout/TopNavigation';
@@ -99,7 +100,6 @@ const MainApp = ({ navigate, currentPage }) => {
   const joinSectionRef = useRef(null);
   const [galleryState, setGalleryState] = useState({ isOpen: false, startIndex: 0 });
   const [updateImage, setUpdateImage] = useState(null);
-  const [isTechtronixFormOpen, setIsTechtronixFormOpen] = useState(false);
 
   const handleScrollToJoin = () => {
     joinSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -121,15 +121,12 @@ const MainApp = ({ navigate, currentPage }) => {
     setUpdateImage(null);
   };
 
-  const openTechtronixForm = () => setIsTechtronixFormOpen(true);
-  const closeTechtronixForm = () => setIsTechtronixFormOpen(false);
-
   return (
     <>
       <div className="bg-gray-100 font-sans antialiased animate-fade-in" style={{ fontFamily: "'Poppins', sans-serif" }}>
         <AnnouncementBanner />
         <HeroSection onJoinClick={handleScrollToJoin} navigate={navigate} currentPage={currentPage} />
-        <ContentSection openGallery={openGallery} onImageClick={openUpdateImage} openTechtronixForm={openTechtronixForm} />
+        <ContentSection openGallery={openGallery} onImageClick={openUpdateImage} />
         <div ref={joinSectionRef} className="bg-white py-12 sm:py-16">
           <JoinSection />
         </div>
@@ -143,7 +140,6 @@ const MainApp = ({ navigate, currentPage }) => {
           onClose={closeUpdateImage}
         />
       )}
-      {isTechtronixFormOpen && <TechtronixJoinPopup onClose={closeTechtronixForm} />}
       <WhatsAppButton />
     </>
   );
@@ -260,9 +256,9 @@ const HeroSection = ({ onJoinClick, navigate, currentPage }) => {
 };
 
 
-const ContentSection = ({ openGallery, onImageClick, openTechtronixForm }) => (
+const ContentSection = ({ openGallery, onImageClick }) => (
   <>
-    <UpcomingEventsSection onImageClick={onImageClick} openTechtronixForm={openTechtronixForm} />
+    <UpcomingEventsSection onImageClick={onImageClick} />
     <LatestUpdatesSection onImageClick={onImageClick} />
     <TestimonialsSection />
     <TeamSection />
@@ -287,7 +283,7 @@ const eventsData = [
   { title: "Fun Events", date: getEventDate(14), imageUrl: funEventImg, altText: "People collaborating", description: "Stay tuned for more exciting and fun-filled events coming your way!" }
 ];
 
-const UpcomingEventsSection = ({ onImageClick, openTechtronixForm }) => {
+const UpcomingEventsSection = ({ onImageClick }) => {
   return (
     <div className="bg-white py-12 sm:py-16">
       <div className="max-w-6xl mx-auto px-6">
@@ -308,7 +304,7 @@ const UpcomingEventsSection = ({ onImageClick, openTechtronixForm }) => {
           >
             {eventsData.map(event => (
               <SwiperSlide key={event.title} className="h-auto cursor-grab w-5/6 md:w-auto">
-                <EventCard {...event} onImageClick={onImageClick} openTechtronixForm={openTechtronixForm} />
+                <EventCard {...event} onImageClick={onImageClick} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -469,7 +465,7 @@ const GallerySection = ({ openGallery }) => (
           className="!pb-12"
         >
           {galleryImages.map((img, index) => (
-            <SwiperSlide key={img.id} className="h-auto flex flex-col">
+            <SwiperSlide key={img.id} className="h-9/10 flex flex-col">
               <div onClick={() => openGallery(index)} className="cursor-pointer h-full">
                 <GalleryImage imageUrl={img.imageUrl} alt={img.alt} />
               </div>
@@ -595,6 +591,7 @@ const WaveBackground = ({ isloading }) => (
       }
       
       .fullscreen-gallery .swiper-slide {
+      display:flex;align-items:center;
         height: 100%;
       }
     `}</style>
@@ -645,7 +642,7 @@ const SectionTitle = ({ title }) => (
   </div>
 );
 
-const EventCard = ({ title, date, imageUrl, altText, description, onImageClick, openTechtronixForm }) => (
+const EventCard = ({ title, date, imageUrl, altText, description, onImageClick }) => (
   <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 group flex flex-col h-full">
     <div className="relative">
       <div className="w-full h-64 bg-gray-100 flex items-center justify-center">
@@ -660,18 +657,17 @@ const EventCard = ({ title, date, imageUrl, altText, description, onImageClick, 
     <div className="p-6 flex-grow flex flex-col">
       <h4 className="text-2xl font-bold text-gray-900">{title}</h4>
       <p className="mt-2 text-gray-600 flex-grow">{description}</p>
-      
-      {title === "Techtronix" && (
+
+      {title === "Gaming Competition" && (
         <div className="mt-auto pt-4">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              openTechtronixForm();
-            }}
-            className="text-gray-600 hover:text-gray-800 font-semibold text-sm transition-colors no-swipe underline underline-offset-2"
+          <a
+            href="https://tinyurl.com/e-football25"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 hover:text-gray-800 font-semibold text-sm transition-colors underline underline-offset-2 no-swipe"
           >
-            I'm interested
-          </button>
+            Register Now
+          </a>
         </div>
       )}
     </div>
@@ -730,7 +726,7 @@ const JoinSection = () => {
       <div className="bg-white p-8 md:p-12 rounded-lg shadow-md border border-gray-200 min-h-[550px] flex flex-col items-center justify-center">
         {!isSubmitted ? (
           <>
-            <SectionTitle title="Join the Voyage" />
+            <SectionTitle title="Register as a member" />
             <form onSubmit={handleSubmit} className="mt-8 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
               <input type="text" name="NAME" placeholder="Name" value={formData.NAME} onChange={handleChange} required className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
               <input type="text" name="YEAR" placeholder="Year" value={formData.YEAR} onChange={handleChange} required className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
@@ -760,8 +756,48 @@ const JoinSection = () => {
 
 const TeamMemberCard = ({ name, role, imageUrl }) => (
   <div className="flex flex-col items-center">
-    <img src={imageUrl} alt={name} className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover shadow-md" />
-    <h4 className="mt-4 text-base sm:text-lg font-bold text-gray-900">{name}</h4>
+    <div className="relative">
+      <div className="w-40 h-40 md:w-52 md:h-52 rounded-full">
+        <div className="relative w-full h-full rounded-full bg-white p-2 overflow-hidden">
+          <img src={imageUrl} alt={name} className="w-full h-full rounded-full object-cover" />
+          <div className="absolute inset-0 shimmer-effect"></div>
+        </div>
+      </div>
+      <style>{`
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            opacity: 0;
+          }
+          15% {
+            opacity: 0.4;
+          }
+          50% {
+            opacity: 0.6;
+          }
+          85% {
+            opacity: 0.4;
+          }
+          100% {
+            transform: translateX(200%) translateY(200%) rotate(45deg);
+            opacity: 0;
+          }
+        }
+        .shimmer-effect {
+          background: linear-gradient(
+            135deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.3) 40%,
+            rgba(255, 255, 255, 0.4) 50%,
+            rgba(255, 255, 255, 0.3) 60%,
+            transparent 100%
+          );
+          animation: shimmer 5s ease-in-out infinite;
+          animation-delay: 2s;
+        }
+      `}</style>
+    </div>
+    <h4 className="mt-6 text-base sm:text-lg font-bold text-gray-900">{name}</h4>
     <p className="text-gray-700 font-semibold text-xs sm:text-sm">{role}</p>
   </div>
 );
@@ -902,84 +938,6 @@ const TshirtAdPopup = ({ onClose, onKnowMore }) => {
   );
 };
 
-const TechtronixJoinPopup = ({ onClose }) => {
-  const [formData, setFormData] = useState({ NAME: '', YEAR: '', BRANCH: '', 'CONTACT NUMBER': '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value }); };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // ⚠️ IMPORTANT: Replace this URL with the one for your new Google Sheet script for Techtronix registrations.
-    const scriptURL = 'https://script.google.com/macros/s/YOUR_NEW_GOOGLE_SHEETS_SCRIPT_URL_HERE/exec';
-    const form = new FormData();
-    for (const key in formData) { form.append(key, formData[key]); }
-    fetch(scriptURL, { method: 'POST', body: form })
-      .catch(error => console.error('Google Sheets API Error!', error.message));
-    setTimeout(() => {
-      setIsSubmitted(true);
-      setIsSubmitting(false);
-    }, 500);
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in" style={{animationDuration: '0.3s'}}>
-      <div className="relative bg-white w-full max-w-lg mx-auto rounded-2xl shadow-2xl overflow-hidden animate-fade-in-scale-up">
-        <button onClick={onClose} className="absolute top-3 right-3 z-10 text-gray-400 hover:text-gray-800 transition-colors">
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-        </button>
-
-        {/* Image at the top */}
-        <div className="w-full h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
-          <img
-            src={techtronixDetailImg}
-            alt="Techtronix Workshop - Image showing robotics and hands-on work"
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        <div className="p-8 md:p-10">
-          {!isSubmitted ? (
-            <>
-              <div className="text-center">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-blue-600">Hands-on Workshop</h2>
-                <h3 className="mt-2 text-3xl font-extrabold text-gray-900">Register for Techtronix</h3>
-              </div>
-              <form onSubmit={handleSubmit} className="mt-8 w-full space-y-5">
-                <input type="text" name="NAME" placeholder="Full Name" value={formData.NAME} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
-                <input type="text" name="YEAR" placeholder="Year of Study" value={formData.YEAR} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
-                <input type="text" name="BRANCH" placeholder="Branch" value={formData.BRANCH} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
-                <input type="tel" name="CONTACT NUMBER" placeholder="Contact Number" value={formData['CONTACT NUMBER']} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
-                <div className="text-center pt-2">
-                  <button type="submit" disabled={isSubmitting} className="w-full bg-gray-900 text-white font-bold py-4 px-12 rounded-lg hover:bg-black transform hover:scale-105 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                    {isSubmitting ? 'Submitting...' : 'SUBMIT REGISTRATION'}
-                  </button>
-                </div>
-              </form>
-            </>
-          ) : (
-            <div className="text-center animate-fade-in-pop py-10">
-              <svg className="w-24 h-24 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <h3 className="mt-6 text-3xl font-bold text-gray-800">Registration Complete!</h3>
-              <p className="mt-3 text-lg text-gray-600">Thank you for registering. We've received your details.</p>
-              <p className="mt-1 text-gray-500">You're one step closer to the world of robotics!</p>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 
 const TshirtPage = ({ navigate, currentPage }) => {
@@ -1059,26 +1017,43 @@ const Footer = () =>(
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
 
         {/* Contact Information */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-bold text-white mb-4">Contact Information</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-center space-x-3 text-sm">
-              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-              </svg>
-              <a href="mailto:iedc@aset.ac.in" className="hover:text-blue-400 transition-colors">iedc@aset.ac.in</a>
+        <div className="space-y-6">
+          <h3 className="text-lg font-bold text-white mb-6">Contact Information</h3>
+          <div className="space-y-5">
+            <div className="flex flex-col items-center text-center space-y-2">
+              <div className="flex items-center justify-center space-x-2">
+                <svg className="w-5 h-5 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                <span className="text-xs text-gray-300 font-medium">General inquiries</span>
+              </div>
+              <a href="mailto:iedc.ahalia@ahalia.ac.in" className="text-sm hover:text-blue-400 transition-colors break-words">
+                iedc.ahalia@ahalia.ac.in
+              </a>
             </div>
-            <div className="flex items-center justify-center space-x-3 text-sm">
-              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-              </svg>
-              <span>Student Lead: <a href="mailto:vishnuvs@gmail.com" className="hover:text-blue-400 transition-colors">vishnuvs@aset.ac.in</a></span>
+
+            <div className="flex flex-col items-center text-center space-y-2">
+              <div className="flex items-center justify-center space-x-2">
+                <svg className="w-5 h-5 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                <span className="text-xs text-gray-300 font-medium">Vishnu (Student Lead)</span>
+              </div>
+              <a href="mailto:vishnu_valiyaparambath@ahalia.ac.in" className="text-sm hover:text-blue-400 transition-colors break-words">
+                vishnu_valiyaparambath@ahalia.ac.in
+              </a>
             </div>
-            <div className="flex items-center justify-center space-x-3 text-sm">
-              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-              </svg>
-              <span>Nodal Officer: <a href="mailto:lakshmys@aset.ac.in" className="hover:text-blue-400 transition-colors">lakshmys@aset.ac.in</a></span>
+
+            <div className="flex flex-col items-center text-center space-y-2">
+              <div className="flex items-center justify-center space-x-2">
+                <svg className="w-5 h-5 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+                <span className="text-xs text-gray-300 font-medium">Nodal Officer</span>
+              </div>
+              <a href="mailto:lakshmy.suresh@ahalia.ac.in" className="text-sm hover:text-blue-400 transition-colors break-words">
+                lakshmy.suresh@ahalia.ac.in
+              </a>
             </div>
           </div>
         </div>
