@@ -423,6 +423,7 @@ const WebTeamSection = () => (
       <SectionTitle title="Web Team" />
       <div className="mt-12">
         <div className="web-team-container">
+          <div className="web-team-rotating-border"></div>
           <div className="web-team-inner">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <WebTeamCard
@@ -560,38 +561,38 @@ const WaveBackground = ({ isloading }) => (
       }
       .web-team-container {
         position: relative;
-        padding: 2px;
         border-radius: 1rem;
-        overflow: hidden;
         max-width: 800px;
         margin: 0 auto;
+        overflow: hidden;
       }
       @media (max-width: 768px) {
         .web-team-container {
-          padding: 2px;
+          /* Adjust for mobile if needed */
         }
       }
-      .web-team-container::before {
-        content: '';
+      .web-team-rotating-border {
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        z-index: 1;
+        top: -100%;
+        left: -100%;
+        width: 300%;
+        height: 300%;
+        border-radius: 0;
         background: conic-gradient(
           #3B82F6 0deg 120deg,
           #000000 120deg 240deg,
-          #6B7280 240deg 360deg
+          #007c5fff 240deg 360deg
         );
-        animation: rotate-outline-web 4s linear infinite;
+        animation: rotate-outline-web 3s linear infinite;
+        z-index: 1;
       }
       .web-team-inner {
         background: white;
-        border-radius: 0.75rem;
+        border-radius: 1rem;
         position: relative;
         z-index: 2;
         padding: 2rem;
+        margin: 2px;
       }
 
 
