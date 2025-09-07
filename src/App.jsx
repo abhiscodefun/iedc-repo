@@ -239,9 +239,9 @@ const HeroSection = ({ onJoinClick, navigate, currentPage }) => {
         onError={(e) => { e.target.style.display = 'none'; }} 
       />
       
-      <div className="relative w-full max-w-6xl mx-auto px-6 h-full">
-        <div className="absolute top-0 left-0 right-0 z-30 px-6">
-            <TopNavigation navigate={navigate} currentPage={currentPage} />
+      <div className="relative w-full max-w-6xl mx-auto px-2 h-full">
+        <div className="absolute top-0 left-0 right-0 z-30 px-2">
+          <TopNavigation navigate={navigate} currentPage={currentPage} />
         </div>
         <div className="relative h-full flex flex-col items-center justify-center text-center z-20">
             <div className="relative">
@@ -946,13 +946,15 @@ const WhatsAppButton = ({}) => {
 
   return (
     <div className="fixed bottom-6 right-6 z-30 flex flex-col items-end">
-      <div className={`transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
-        <form onSubmit={handleSend} className="bg-slate-50 p-4 rounded-lg shadow-2xl mb-2 w-80 border border-slate-200">
-          <h3 className="font-bold text-slate-800 text-lg mb-3">Send a Message</h3>
-          <textarea className="w-full h-28 p-3 bg-white border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-800 transition" placeholder="Hi, I'd like to know more about..." value={message} onChange={(e) => setMessage(e.target.value)} />
-          <button type="submit" className="w-full mt-3 bg-slate-800 text-white font-bold py-3 px-4 rounded-lg hover:bg-black transition-colors"> Send via WhatsApp </button>
-        </form>
-      </div>
+      {isOpen && (
+        <div className="transition-all duration-300 ease-in-out opacity-100 translate-y-0">
+          <form onSubmit={handleSend} className="bg-slate-50 p-4 rounded-lg shadow-2xl mb-2 w-80 border border-slate-200">
+            <h3 className="font-bold text-slate-800 text-lg mb-3">Send a Message</h3>
+            <textarea className="w-full h-28 p-3 bg-white border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-800 transition" placeholder="Hi, I'd like to know more about..." value={message} onChange={(e) => setMessage(e.target.value)} />
+            <button type="submit" className="w-full mt-3 bg-slate-800 text-white font-bold py-3 px-4 rounded-lg hover:bg-black transition-colors"> Send via WhatsApp </button>
+          </form>
+        </div>
+      )}
       <button onClick={() => setIsOpen(!isOpen)} className="bg-white text-black rounded-full w-16 h-16 flex items-center justify-center shadow-xl transform hover:scale-110 transition-transform" aria-label={isOpen ? "Close messenger" : "Open WhatsApp messenger"}>
         {isOpen ? (
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
