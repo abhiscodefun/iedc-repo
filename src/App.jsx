@@ -130,6 +130,7 @@ const MainApp = ({ navigate, currentPage }) => {
         <div ref={joinSectionRef} className="bg-white py-12 sm:py-16">
           <JoinSection />
         </div>
+        <WebTeamSection />
         <Footer />
       </div>
       {galleryState.isOpen && <FullScreenGallery images={galleryImages} startIndex={galleryState.startIndex} onClose={closeGallery} />}
@@ -412,9 +413,37 @@ const teamData = {
     { name: "Irin Ranju", role: "Women & Entrepreneurship Lead", imageUrl: ex07Img },
     { name: "Adhoeeba Sherin", role: "Finance Lead", imageUrl: ex08Img },
     { name: "Afrah Fathima", role: "Marketing Lead", imageUrl: ex09Img },
-    { name: "Akshara", role: "IPR & Research Lead", imageUrl: ex10nsImg }
+    { name: "Aksharaa D", role: "IPR & Research Lead", imageUrl: ex10nsImg }
   ]
 };
+
+const WebTeamSection = () => (
+  <div id="web-team" className="bg-gray-50 py-12 sm:py-16">
+    <div className="max-w-6xl mx-auto px-6">
+      <SectionTitle title="Web Team" />
+      <div className="mt-12">
+        <div className="web-team-container">
+          <div className="web-team-inner">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <WebTeamCard
+                name="ABHIRAM K"
+                role="Lead Developer"
+                imageUrl={ex06Img}
+                className=""
+              />
+              <WebTeamCard
+                name="VISHNU VS"
+                role="Content Strategist"
+                imageUrl={ex01Img}
+                className=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 const TeamSection = () => (
   <div className="bg-gray-50 py-12 sm:py-16">
@@ -522,6 +551,47 @@ const WaveBackground = ({ isloading }) => (
           transparent 25%
         );
         animation: rotate-outline 4s linear infinite;
+      }
+
+      /* Rotating border for web team */
+      @keyframes rotate-outline-web {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .web-team-container {
+        position: relative;
+        padding: 2px;
+        border-radius: 1rem;
+        overflow: hidden;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      @media (max-width: 768px) {
+        .web-team-container {
+          padding: 2px;
+        }
+      }
+      .web-team-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        z-index: 1;
+        background: conic-gradient(
+          #3B82F6 0deg 120deg,
+          #000000 120deg 240deg,
+          #6B7280 240deg 360deg
+        );
+        animation: rotate-outline-web 4s linear infinite;
+      }
+      .web-team-inner {
+        background: white;
+        border-radius: 0.75rem;
+        position: relative;
+        z-index: 2;
+        padding: 2rem;
       }
 
 
@@ -799,6 +869,14 @@ const TeamMemberCard = ({ name, role, imageUrl }) => (
     </div>
     <h4 className="mt-6 text-base sm:text-lg font-bold text-gray-900">{name}</h4>
     <p className="text-gray-700 font-semibold text-xs sm:text-sm">{role}</p>
+  </div>
+);
+
+const WebTeamCard = ({ imageUrl, name, role, className }) => (
+  <div className={`flex flex-col items-center bg-white rounded-lg shadow-lg p-4 border border-gray-200 ${className}`}>
+    <img src={imageUrl} alt={name} className="w-40 h-40 rounded-full object-cover mb-4" />
+    <h4 className="text-lg font-bold text-gray-900">{name}</h4>
+    <p className="text-gray-700">{role}</p>
   </div>
 );
 
