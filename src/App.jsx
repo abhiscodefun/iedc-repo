@@ -411,7 +411,7 @@ const teamData = {
     { name: "Midhun M", role: "Technical Lead", imageUrl: ex05Img },
     { name: "Abhiram K", role: "Creative & Innovation Lead", imageUrl: ex06Img },
     { name: "Irin Ranju", role: "Women & Entrepreneurship Lead", imageUrl: ex07Img },
-    { name: "Adhoeeba Sherin", role: "Finance Lead", imageUrl: ex08Img },
+    { name: "Adheeba Sherin A", role: "Finance Lead", imageUrl: ex08Img },
     { name: "Afrah Fathima", role: "Marketing Lead", imageUrl: ex09Img },
     { name: "Aksharaa D", role: "IPR & Research Lead", imageUrl: ex10nsImg }
   ]
