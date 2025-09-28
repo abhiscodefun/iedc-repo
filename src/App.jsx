@@ -44,6 +44,7 @@ import teamBackgroundVideo from './assets/team_background.mp4';
 
 // --- Import TopNavigation with logos ---
 import TopNavigation from './components/layout/TopNavigation';
+import PodcastSection from './components/home/PodcastSection';
 
 
 // --- Main App Component ---
@@ -51,7 +52,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
   const [page, setPage] = useState('home');
-  const [showTshirtAd, setShowTshirtAd] = useState(false);
 
   const navigate = (targetPage) => {
     setPage(targetPage);
@@ -67,19 +67,6 @@ const App = () => {
     return () => clearTimeout(exitTimer);
   }, []);
 
-  useEffect(() => {
-    if (!isLoading) {
-      const adTimer = setTimeout(() => {
-        setShowTshirtAd(true);
-      }, 1500);
-      return () => clearTimeout(adTimer);
-    }
-  }, [isLoading]);
-
-  const handleKnowMore = () => {
-    setShowTshirtAd(false);
-    navigate('tshirt');
-  };
 
   if (isLoading) {
     return <LoadingScreen isExiting={isExiting} />;
@@ -87,7 +74,6 @@ const App = () => {
   
   return (
     <>
-      {showTshirtAd && <TshirtAdPopup onClose={() => setShowTshirtAd(false)} onKnowMore={handleKnowMore} />}
       {page === 'home' && <MainApp navigate={navigate} currentPage={page} />}
       {page === 'events' && <EventsPage navigate={navigate} currentPage={page} />}
       {page === 'tshirt' && <TshirtPage navigate={navigate} currentPage={page} />}
@@ -98,11 +84,16 @@ const App = () => {
 // --- The Main Application (Home Page) ---
 const MainApp = ({ navigate, currentPage }) => {
   const joinSectionRef = useRef(null);
+  const podcastSectionRef = useRef(null);
   const [galleryState, setGalleryState] = useState({ isOpen: false, startIndex: 0 });
   const [updateImage, setUpdateImage] = useState(null);
 
   const handleScrollToJoin = () => {
     joinSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const handleScrollToPodcast = () => {
+    podcastSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const openGallery = (index) => {
@@ -124,8 +115,11 @@ const MainApp = ({ navigate, currentPage }) => {
   return (
     <>
       <div className="bg-gray-100 font-sans antialiased animate-fade-in" style={{ fontFamily: "'Poppins', sans-serif" }}>
-        <AnnouncementBanner />
+        <AnnouncementBanner onPodcastClick={handleScrollToPodcast} />
         <HeroSection onJoinClick={handleScrollToJoin} navigate={navigate} currentPage={currentPage} />
+        <div ref={podcastSectionRef}>
+          <PodcastSection />
+        </div>
         <ContentSection openGallery={openGallery} onImageClick={openUpdateImage} />
         <div ref={joinSectionRef} className="bg-white py-12 sm:py-16">
           <JoinSection />
@@ -192,13 +186,24 @@ const LoadingScreen = ({ isExiting }) => {
 
 
 // --- Scrolling Announcement Banner ---
-const AnnouncementBanner = () => (
-  <div className="text-white bg-black py-3 overflow-hidden whitespace-nowrap shadow-md" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-    <div className="inline-block animate-marquee">
-      <span className="mx-12 text-sm font-medium tracking-wider">TSHIRT sale exclusively for IEDC members coming soon!</span>
-      <span className="mx-12 text-sm font-medium tracking-wider">TSHIRT sale exclusively for IEDC members coming soon!</span>
-      <span className="mx-12 text-sm font-medium tracking-wider">TSHIRT sale exclusively for IEDC members coming soon!</span>
+const AnnouncementBanner = ({ onPodcastClick }) => (
+  <div className="text-white bg-black py-3 overflow-hidden shadow-md relative" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+    <div className="inline-block animate-marquee whitespace-nowrap" style={{ animationDuration: '15s' }}>
+      <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
+      <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
+      <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
+      <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
+      <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
+      <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
+      <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
+      <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
     </div>
+    <button
+      onClick={onPodcastClick}
+      className="absolute right-8 top-1/2 transform -translate-y-1/2 bg-white text-black text-xs font-medium px-4 py-2 rounded-full border-2 border-gray-300 hover:bg-gray-200 transition-colors"
+    >
+      Listen Now
+    </button>
   </div>
 );
 
