@@ -2,8 +2,37 @@ import React from 'react';
 
 const NewPodcastSection = () => {
   return (
-    <div className="bg-gray-100 py-12 sm:py-16">
-      <div className="max-w-6xl mx-auto px-6">
+    <div className="bg-gray-900 py-12 sm:py-16 relative overflow-hidden">
+      {/* Background Audio Beats Animation - Tall and Narrow */}
+      <div className="absolute inset-0 flex justify-center items-center opacity-60">
+        <svg className="w-6 h-full" viewBox="0 0 24 600" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="beatsGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.9" />
+              <stop offset="20%" stopColor="#3B82F6" stopOpacity="1" />
+              <stop offset="50%" stopColor="#2563EB" stopOpacity="0.9" />
+              <stop offset="80%" stopColor="#1E40AF" stopOpacity="0.7" />
+              <stop offset="100%" stopColor="#1E3A8A" stopOpacity="0.5" />
+            </linearGradient>
+          </defs>
+          <g className="audio-beats-vertical">
+            {/* Vertical audio bars spanning full height */}
+            {Array.from({ length: 30 }, (_, i) => (
+              <rect
+                key={`beat-${i}`}
+                x="6"
+                y={i * 20}
+                width="12"
+                height="10"
+                fill="url(#beatsGradient)"
+                className={`animate-beat-vertical-${(i % 5) + 1}`}
+              />
+            ))}
+          </g>
+        </svg>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="bg-white rounded-2xl p-8 shadow-2xl relative">
           {/* Header with episode number */}
           <div className="flex flex-col sm:flex-row items-center sm:justify-between mb-8">
@@ -26,7 +55,7 @@ const NewPodcastSection = () => {
           <div className="flex flex-col lg:flex-row gap-8 items-start relative">
             {/* YouTube embed */}
             <div className="w-full lg:w-2/3">
-              <div className="relative aspect-video rounded-xl overflow-hidden shadow-lg">
+              <div className="relative aspect-video overflow-hidden shadow-lg" style={{ margin: 0, padding: 0 }}>
                 <iframe
                   width="100%"
                   height="100%"
@@ -36,6 +65,7 @@ const NewPodcastSection = () => {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className="w-full h-full"
+                  style={{ margin: 0, border: 'none' }}
                 ></iframe>
               </div>
             </div>
@@ -66,16 +96,66 @@ const NewPodcastSection = () => {
       </div>
 
       <style>{`
-        .animate-border-glow {
-          animation: border-glow 3s ease-in-out infinite;
+        .audio-beats-vertical rect {
+          transform-origin: center bottom;
         }
 
-        @keyframes border-glow {
+        .animate-beat-vertical-1 { animation: verticalBeat 3.2s ease-in-out infinite; }
+        .animate-beat-vertical-2 { animation: verticalBeat 3.4s ease-in-out infinite 0.2s; }
+        .animate-beat-vertical-3 { animation: verticalBeat 3.6s ease-in-out infinite 0.4s; }
+        .animate-beat-vertical-4 { animation: verticalBeat 3.8s ease-in-out infinite 0.6s; }
+        .animate-beat-vertical-5 { animation: verticalBeat 3.0s ease-in-out infinite 0.8s; }
+
+        @keyframes verticalBeat {
           0%, 100% {
-            box-shadow: 0 0 5px rgba(59, 130, 246, 0.3), 0 0 10px rgba(59, 130, 246, 0.2), 0 0 15px rgba(59, 130, 246, 0.1);
+            height: 4px;
+            y: 296px;
+            opacity: 0.3;
+          }
+          10% {
+            height: 8px;
+            y: 292px;
+            opacity: 0.4;
+          }
+          20% {
+            height: 16px;
+            y: 284px;
+            opacity: 0.6;
+          }
+          30% {
+            height: 24px;
+            y: 276px;
+            opacity: 0.8;
+          }
+          40% {
+            height: 32px;
+            y: 268px;
+            opacity: 1;
           }
           50% {
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6), 0 0 20px rgba(59, 130, 246, 0.4), 0 0 30px rgba(59, 130, 246, 0.3);
+            height: 20px;
+            y: 280px;
+            opacity: 0.9;
+          }
+          60% {
+            height: 28px;
+            y: 272px;
+            opacity: 0.8;
+          }
+          70% {
+            height: 12px;
+            y: 288px;
+            opacity: 0.6;
+          }
+          80% {
+            height: 18px;
+            y: 282px;
+            opacity: 0.7;
+          }
+          90% {
+            height: 6px;
+            y: 294px;
+            opacity: 0.4;
           }
         }
       `}</style>

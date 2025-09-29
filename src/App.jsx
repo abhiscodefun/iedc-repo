@@ -45,6 +45,7 @@ import teamBackgroundVideo from './assets/team_background.mp4';
 // --- Import TopNavigation with logos ---
 import TopNavigation from './components/layout/TopNavigation';
 import PodcastSection from './components/home/PodcastSection';
+import { DarkModeProvider } from './hooks/useDarkMode.jsx';
 
 
 // --- Main App Component ---
@@ -73,11 +74,11 @@ const App = () => {
   }
   
   return (
-    <>
+    <DarkModeProvider>
       {page === 'home' && <MainApp navigate={navigate} currentPage={page} />}
       {page === 'events' && <EventsPage navigate={navigate} currentPage={page} />}
       {page === 'tshirt' && <TshirtPage navigate={navigate} currentPage={page} />}
-    </>
+    </DarkModeProvider>
   );
 };
 
@@ -295,17 +296,17 @@ const UpcomingEventsSection = ({ onImageClick }) => {
       <div className="max-w-6xl mx-auto px-6">
         <SectionTitle title="Upcoming Events" />
         <div className="mt-12">
-          <Swiper 
-            modules={[Pagination]} 
-            spaceBetween={20} 
+          <Swiper
+            modules={[Pagination]}
+            spaceBetween={20}
             slidesPerView={'auto'}
             noSwipingClass="no-swipe"
             touchRatio={1.5}
-            pagination={{ el: '.swiper-pagination-custom', clickable: true, type: 'progressbar' }} 
-            breakpoints={{ 
-              768: { slidesPerView: 2, centeredSlides: false }, 
-              1024: { slidesPerView: 3, centeredSlides: false }  
-            }} 
+            pagination={{ el: '.swiper-pagination-custom', clickable: true, type: 'progressbar' }}
+            breakpoints={{
+              768: { slidesPerView: 2, centeredSlides: false },
+              1024: { slidesPerView: 3, centeredSlides: false }
+            }}
             className="!pb-4"
           >
             {eventsData.map(event => (
@@ -455,11 +456,11 @@ const TeamSection = () => (
   <div className="bg-gray-50 py-12 sm:py-16">
     <div className="max-w-6xl mx-auto px-6">
       <SectionTitle title="Meet the Team" />
-      <h4 className="text-2xl font-bold text-gray-700 text-center mt-16 mb-8">Nodal Officers</h4>
+      <h4 className="text-2xl font-bold text-gray-800 text-center mt-16 mb-8">Nodal Officers</h4>
       <div className="flex justify-center gap-8 md:gap-16">
         {teamData.nodalOfficers.map(member => <TeamMemberCard key={member.name} {...member} />)}
       </div>
-      <h4 className="text-2xl font-bold text-gray-700 text-center mt-16 mb-8">Core Team</h4>
+      <h4 className="text-2xl font-bold text-gray-800 text-center mt-16 mb-8">Core Team</h4>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 text-center">
         {teamData.coreTeam.map(member => <TeamMemberCard key={member.name} {...member} />)}
       </div>
@@ -863,9 +864,9 @@ const TeamMemberCard = ({ name, role, imageUrl }) => (
           background: linear-gradient(
             135deg,
             transparent 0%,
-            rgba(255, 255, 255, 0.3) 40%,
-            rgba(255, 255, 255, 0.4) 50%,
-            rgba(255, 255, 255, 0.3) 60%,
+            rgba(255, 255, 255, 0.5) 40%,
+            rgba(255, 255, 255, 0.6) 50%,
+            rgba(255, 255, 255, 0.5) 60%,
             transparent 100%
           );
           animation: shimmer 5s ease-in-out infinite;
@@ -882,7 +883,7 @@ const WebTeamCard = ({ imageUrl, name, role, className }) => (
   <div className={`flex flex-col items-center bg-white rounded-lg shadow-lg p-4 border border-gray-200 ${className}`}>
     <img src={imageUrl} alt={name} className="w-40 h-40 rounded-full object-cover mb-4" />
     <h4 className="text-lg font-bold text-gray-900">{name}</h4>
-    <p className="text-gray-700">{role}</p>
+    <p className="text-gray-600">{role}</p>
   </div>
 );
 
