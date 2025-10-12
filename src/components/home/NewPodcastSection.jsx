@@ -1,11 +1,27 @@
 import React from 'react';
 
 const NewPodcastSection = () => {
+  const verticalBeats = Array.from({ length: 30 }, (_, i) => (
+    <rect
+      key={`beat-${i}`}
+      x="6"
+      y={i * 20}
+      width="12"
+      height="10"
+      fill="url(#beatsGradient)"
+      className={`animate-beat-vertical-${(i % 5) + 1}`}
+    />
+  ));
+
   return (
     <div className="bg-gray-900 py-12 sm:py-16 relative overflow-hidden">
-      {/* Background Audio Beats Animation - Tall and Narrow */}
+      {/* Background Audio Beats */}
       <div className="absolute inset-0 flex justify-center items-center opacity-60">
-        <svg className="w-6 h-full" viewBox="0 0 24 600" preserveAspectRatio="xMidYMid meet">
+        <svg
+          className="w-6 h-full"
+          viewBox="0 0 24 600"
+          preserveAspectRatio="xMidYMid meet"
+        >
           <defs>
             <linearGradient id="beatsGradient" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.9" />
@@ -15,47 +31,34 @@ const NewPodcastSection = () => {
               <stop offset="100%" stopColor="#1E3A8A" stopOpacity="0.5" />
             </linearGradient>
           </defs>
-          <g className="audio-beats-vertical">
-            {/* Vertical audio bars spanning full height */}
-            {Array.from({ length: 30 }, (_, i) => (
-              <rect
-                key={`beat-${i}`}
-                x="6"
-                y={i * 20}
-                width="12"
-                height="10"
-                fill="url(#beatsGradient)"
-                className={`animate-beat-vertical-${(i % 5) + 1}`}
-              />
-            ))}
-          </g>
+          <g className="audio-beats-vertical">{verticalBeats}</g>
         </svg>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="bg-white rounded-2xl p-8 shadow-2xl relative">
-          {/* Header with episode number */}
+      <div className="max-w-5xl mx-auto px-6 relative z-10">
+        <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-red-500 rounded-2xl p-8 shadow-2xl relative text-white">
+          {/* Header */}
           <div className="flex flex-col sm:flex-row items-center sm:justify-between mb-8">
             <div className="text-center sm:text-left">
-              <h1 className="text-5xl sm:text-6xl font-extrabold text-purple-600 mb-2">
+              <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-300 via-gray-200 to-yellow-900 bg-clip-text text-transparent">
                 IDEAPOD!
               </h1>
-              <p className="text-xl sm:text-2xl font-light text-gray-600 italic">
+              <p className="text-xl sm:text-2xl font-light text-gray-100 italic">
                 your weekly pump of startup stories
               </p>
             </div>
-
-            {/* Episode number */}
             <div className="text-center sm:text-left mt-4 sm:mt-0">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">Episode #1</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white">
+                Episode #1
+              </h2>
             </div>
           </div>
 
-          {/* YouTube embed and description */}
+          {/* YouTube & Description */}
           <div className="flex flex-col lg:flex-row gap-8 items-start relative">
-            {/* YouTube embed */}
+            {/* YouTube Embed */}
             <div className="w-full lg:w-2/3">
-              <div className="relative aspect-video overflow-hidden shadow-lg" style={{ margin: 0, padding: 0 }}>
+              <div className="relative aspect-video overflow-hidden shadow-lg">
                 <iframe
                   width="100%"
                   height="100%"
@@ -65,41 +68,55 @@ const NewPodcastSection = () => {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className="w-full h-full"
-                  style={{ margin: 0, border: 'none' }}
-                ></iframe>
+                  style={{ border: 'none' }}
+                />
               </div>
             </div>
 
             {/* Description */}
             <div className="w-full lg:w-1/3 flex flex-col justify-between h-full">
-              <p className="text-lg text-gray-700 leading-relaxed font-light">
-                Get to know about startup, business and IEDC through IDEAPOD! An introduction to the epitome of ideas.
+              <p className="text-lg text-gray-100 leading-relaxed font-light">
+                Get to know about startup, business, and IEDC through IDEAPOD! An
+                introduction to the epitome of ideas.
               </p>
 
-              {/* Spotify link at bottom */}
+              {/* Spotify Link */}
               <div className="mt-auto pt-4">
                 <a
                   href="https://open.spotify.com/show/2jQ8WwxwUbaWDvWbmAdK5d"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 transition-colors font-light text-base"
+                  className="inline-flex items-center gap-2 text-green-500 hover:text-green-400 transition-colors font-light text-base"
                 >
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0C5.374 0 0 5.373 0 12s5.374 12 12 12 12-5.373 12-12S18.626 0 12 0zm5.568 16.859c-.217.257-.479.411-.826.411-.558 0-.999-.439-.999-.999 0-.558.441-.999.999-.999.347 0 .609.154.826.411.685.821.685 1.927 0 2.748zM16.638 13.847c-.265.318-.61.494-.985.494-.776 0-1.404-.628-1.404-1.404s.628-1.404 1.404-1.404c.375 0 .72.176.985.494.888 1.064.888 2.346 0 3.41zM19.708 10.835c-.318.381-.735.573-1.143.573-1.095 0-1.984-.889-1.984-1.984s.889-1.984 1.984-1.984c.408 0 .825.192 1.143.573 1.091 1.306 1.091 2.876 0 4.182z"/>
+                  {/* Spotify Icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 168 168"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M84 0C37.58 0 0 37.58 0 84s37.58 84 84 84 84-37.58 84-84S130.42 0 84 0zm38.66 121.82c-1.54 2.36-4.77 3.07-7.13 1.52-19.45-12.67-43.9-15.54-72.88-8.3-2.78.75-5.55-1.06-6.3-3.83-.75-2.78 1.06-5.55 3.83-6.3 32.98-8.89 60.96-5.7 83.56 9.47 2.36 1.55 3.07 4.77 1.52 7.14zm9.96-22.83c-1.93 2.95-6.02 3.87-8.96 1.94-22.29-14.57-56.28-18.83-82.61-10.06-3.31 1.08-6.86-0.74-7.94-4.05-1.08-3.31.74-6.86 4.05-7.94 30.79-10.06 68.39-5.32 93.45 11.29 2.94 1.93 3.87 6.02 1.95 8.82zm.17-23.4c-26.3-16.12-69.91-17.62-95.97-9.41-4.02 1.15-8.32-1.22-9.46-5.24-1.14-4.02 1.22-8.32 5.24-9.46 29.51-8.47 77.36-6.73 107.17 10.26 3.73 2.29 4.87 7.18 2.58 10.9-2.28 3.74-7.18 4.87-10.56 2.95z"
+                    />
                   </svg>
                   Listen on Spotify
                 </a>
+              </div>
+
+              {/* Speakers */}
+              <div className="mt-6 w-full bg-gray-100 rounded-full p-4 flex justify-around text-gray-900 font-medium">
+                Speakers: Adheeba | Saniya
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Animation Styles */}
       <style>{`
         .audio-beats-vertical rect {
           transform-origin: center bottom;
         }
-
         .animate-beat-vertical-1 { animation: verticalBeat 3.2s ease-in-out infinite; }
         .animate-beat-vertical-2 { animation: verticalBeat 3.4s ease-in-out infinite 0.2s; }
         .animate-beat-vertical-3 { animation: verticalBeat 3.6s ease-in-out infinite 0.4s; }
@@ -107,56 +124,16 @@ const NewPodcastSection = () => {
         .animate-beat-vertical-5 { animation: verticalBeat 3.0s ease-in-out infinite 0.8s; }
 
         @keyframes verticalBeat {
-          0%, 100% {
-            height: 4px;
-            y: 296px;
-            opacity: 0.3;
-          }
-          10% {
-            height: 8px;
-            y: 292px;
-            opacity: 0.4;
-          }
-          20% {
-            height: 16px;
-            y: 284px;
-            opacity: 0.6;
-          }
-          30% {
-            height: 24px;
-            y: 276px;
-            opacity: 0.8;
-          }
-          40% {
-            height: 32px;
-            y: 268px;
-            opacity: 1;
-          }
-          50% {
-            height: 20px;
-            y: 280px;
-            opacity: 0.9;
-          }
-          60% {
-            height: 28px;
-            y: 272px;
-            opacity: 0.8;
-          }
-          70% {
-            height: 12px;
-            y: 288px;
-            opacity: 0.6;
-          }
-          80% {
-            height: 18px;
-            y: 282px;
-            opacity: 0.7;
-          }
-          90% {
-            height: 6px;
-            y: 294px;
-            opacity: 0.4;
-          }
+          0%, 100% { height: 4px; y: 296px; opacity: 0.3; }
+          10% { height: 8px; y: 292px; opacity: 0.4; }
+          20% { height: 16px; y: 284px; opacity: 0.6; }
+          30% { height: 24px; y: 276px; opacity: 0.8; }
+          40% { height: 32px; y: 268px; opacity: 1; }
+          50% { height: 20px; y: 280px; opacity: 0.9; }
+          60% { height: 28px; y: 272px; opacity: 0.8; }
+          70% { height: 12px; y: 288px; opacity: 0.6; }
+          80% { height: 18px; y: 282px; opacity: 0.7; }
+          90% { height: 6px; y: 294px; opacity: 0.4; }
         }
       `}</style>
     </div>
