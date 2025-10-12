@@ -36,14 +36,17 @@ const NewPodcastSection = () => {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 relative z-10">
-        <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-red-500 rounded-2xl p-8 shadow-2xl relative text-white">
+        <div className="relative text-white rounded-2xl shadow-2xl overflow-hidden
+                        bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900
+                        p-8 border-2 border-transparent
+                        animate-neon-border">
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-center sm:justify-between mb-8">
             <div className="text-center sm:text-left">
               <h1 className="text-5xl font-extrabold bg-gradient-to-r from-gray-300 via-gray-200 to-yellow-900 bg-clip-text text-transparent">
                 IDEAPOD!
               </h1>
-              <p className="text-xl sm:text-2xl font-light text-gray-100 italic">
+              <p className="text-xl sm:text-2xl font-light text-gray-100 italic hidden sm:block">
                 your weekly pump of startup stories
               </p>
             </div>
@@ -58,7 +61,7 @@ const NewPodcastSection = () => {
           <div className="flex flex-col lg:flex-row gap-8 items-start relative">
             {/* YouTube Embed */}
             <div className="w-full lg:w-2/3">
-              <div className="relative aspect-video overflow-hidden shadow-lg">
+              <div className="relative aspect-video overflow-hidden shadow-lg rounded-xl">
                 <iframe
                   width="100%"
                   height="100%"
@@ -74,7 +77,7 @@ const NewPodcastSection = () => {
             </div>
 
             {/* Description */}
-            <div className="w-full lg:w-1/3 flex flex-col justify-between h-full">
+            <div className="w-full lg:w-1/3 flex flex-col justify-between h-full hidden sm:flex">
               <p className="text-lg text-gray-100 leading-relaxed font-light">
                 Get to know about startup, business, and IEDC through IDEAPOD! An
                 introduction to the epitome of ideas.
@@ -88,7 +91,6 @@ const NewPodcastSection = () => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-green-500 hover:text-green-400 transition-colors font-light text-base"
                 >
-                  {/* Spotify Icon */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 168 168"
@@ -134,6 +136,15 @@ const NewPodcastSection = () => {
           70% { height: 12px; y: 288px; opacity: 0.6; }
           80% { height: 18px; y: 282px; opacity: 0.7; }
           90% { height: 6px; y: 294px; opacity: 0.4; }
+        }
+
+        /* Subtle neon border animation (violet ↔ indigo) */
+        @keyframes neonGlow {
+          0%, 100% { border-color: #8b5cf6; box-shadow: 0 0 6px #8b5cf6, 0 0 12px #7c3aed; }
+          50% { border-color: #7c3aed; box-shadow: 0 0 6px #7c3aed, 0 0 12px #8b5cf6; }
+        }
+        .animate-neon-border {
+          animation: neonGlow 3s infinite alternate;
         }
       `}</style>
     </div>
