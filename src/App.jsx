@@ -45,6 +45,7 @@ import teamBackgroundVideo from './assets/team_background.mp4';
 // --- Import TopNavigation with logos ---
 import TopNavigation from './components/layout/TopNavigation';
 import PodcastSection from './components/home/PodcastSection';
+import ArisePage from './pages/ArisePage';
 import { DarkModeProvider } from './hooks/useDarkMode.jsx';
 
 
@@ -55,6 +56,10 @@ const App = () => {
   const [page, setPage] = useState('home');
 
   const navigate = (targetPage) => {
+    if (targetPage === 'arise') {
+      window.location.href = '/arise'; // Navigate to the new page
+      return;
+    }
     setPage(targetPage);
     window.scrollTo(0, 0);
   };
@@ -78,6 +83,7 @@ const App = () => {
       {page === 'home' && <MainApp navigate={navigate} currentPage={page} />}
       {page === 'events' && <EventsPage navigate={navigate} currentPage={page} />}
       {page === 'tshirt' && <TshirtPage navigate={navigate} currentPage={page} />}
+      {page === 'arise' && <ArisePage />}
     </DarkModeProvider>
   );
 };
@@ -256,6 +262,13 @@ const HeroSection = ({ onJoinClick, navigate, currentPage }) => {
                     <JoinButton onClick={onJoinClick} />
                 </div>
             </div>
+            {/* Arise Button positioned at bottom */}
+            <button
+                onClick={() => navigate('arise')}
+                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 px-8 py-3 bg-black text-white rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 z-10"
+            >
+                ARISE - let your ideas soar
+            </button>
         </div>
       </div>
     </div>
