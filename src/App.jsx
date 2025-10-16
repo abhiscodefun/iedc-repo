@@ -56,10 +56,6 @@ const App = () => {
   const [page, setPage] = useState('home');
 
   const navigate = (targetPage) => {
-    if (targetPage === 'arise') {
-      window.location.href = '/arise'; // Navigate to the new page
-      return;
-    }
     setPage(targetPage);
     window.scrollTo(0, 0);
   };
