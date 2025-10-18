@@ -46,6 +46,7 @@ import teamBackgroundVideo from './assets/team_background.mp4';
 import TopNavigation from './components/layout/TopNavigation';
 import PodcastSection from './components/home/PodcastSection';
 import ArisePage from './pages/ArisePage';
+import AriseSection from './components/common/AriseSection';
 import { DarkModeProvider } from './hooks/useDarkMode.jsx';
 
 
@@ -118,8 +119,20 @@ const HomePage = () => {
       <div className="bg-gray-100 font-sans antialiased animate-fade-in" style={{ fontFamily: "'Poppins', sans-serif" }}>
         <AnnouncementBanner onPodcastClick={handleScrollToPodcast} />
         <HeroSection onJoinClick={handleScrollToJoin} />
+        
         <div ref={podcastSectionRef}>
           <PodcastSection />
+        </div>
+  
+        {/* IEDC ARISE Section */}
+        <div className='flex flex-col bg-black text-gray-100 p-8 shadow-[0_0_100px_#ff3c00] absolute bottom-8 z-20'>
+          <p>Have an idea in your mind? Give it wings with IEDC ARISE</p>
+          <Link
+            to="/arise"
+            className="text-white hover:text-gray-300 transition-colors font-semibold mt-2"
+          >
+            POST NOW
+          </Link>
         </div>
         <ContentSection openGallery={openGallery} onImageClick={openUpdateImage} />
         <div ref={joinSectionRef} className="bg-white py-12 sm:py-16">
@@ -256,17 +269,7 @@ const HeroSection = ({ onJoinClick }) => {
                     <JoinButton onClick={onJoinClick} />
                 </div>
             </div>
-            {/* Arise Button positioned at bottom */}
-
-            <div className='flex flex-col bg-black text-gray-100 p-8 shadow-[0_0_100px_#ff3c00] absolute bottom-8'>
-              <p>Have an idea in your mind? Give it wings with IEDC ARISE</p>
-                          <Link
-                to="/arise"
-                className=""
-            >
-                POST NOW
-            </Link>
-            </div>
+            
         </div>
       </div>
     </div>
