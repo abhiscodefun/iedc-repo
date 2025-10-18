@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
+import { Link } from 'react-router-dom';
 import TopNavigation from '../layout/TopNavigation';
 
 const HeroText = memo(({ isVisible }) => (
@@ -21,7 +22,7 @@ const JoinButton = memo(({ onClick }) => (
   </button>
 ));
 
-const HeroSection = ({ onJoinClick, navigate }) => {
+const HeroSection = ({ onJoinClick }) => {
   const [waveStyle, setWaveStyle] = useState({ buttonY: 0, rotation: 0 });
   const [isTextVisible, setIsTextVisible] = useState(false);
 
@@ -66,12 +67,12 @@ const HeroSection = ({ onJoinClick, navigate }) => {
             </div>
           </div>
           {/* Arise Button positioned at bottom */}
-          <button
-            onClick={() => navigate('arise')}
+          <Link
+            to="/arise"
             className="absolute bottom-8 left-1/2 transform -translate-x-1/2 px-8 py-3 bg-black text-white rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 z-10"
           >
             ARISE - let your ideas soar
-          </button>
+          </Link>
         </div>
       </div>
     </div>

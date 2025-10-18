@@ -1,6 +1,6 @@
 // ✨ Remember to run: npm install swiper
 import React, { useRef, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 
 // ✨ Swiper component imports
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -53,12 +53,6 @@ import { DarkModeProvider } from './hooks/useDarkMode.jsx';
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
-  const [page, setPage] = useState('home');
-
-  const navigate = (targetPage) => {
-    setPage(targetPage);
-    window.scrollTo(0, 0);
-  };
 
   useEffect(() => {
     const exitTimer = setTimeout(() => {
@@ -69,23 +63,27 @@ const App = () => {
     return () => clearTimeout(exitTimer);
   }, []);
 
-
   if (isLoading) {
     return <LoadingScreen isExiting={isExiting} />;
   }
-  
+
   return (
     <DarkModeProvider>
-      {page === 'home' && <MainApp navigate={navigate} currentPage={page} />}
-      {page === 'events' && <EventsPage navigate={navigate} currentPage={page} />}
-      {page === 'tshirt' && <TshirtPage navigate={navigate} currentPage={page} />}
-      {page === 'arise' && <ArisePage />}
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/tshirt" element={<TshirtPage />} />
+          <Route path="/arise" element={<ArisePage />} />
+        </Routes>
+      </Router>
     </DarkModeProvider>
   );
 };
 
 // --- The Main Application (Home Page) ---
-const MainApp = ({ navigate, currentPage }) => {
+const HomePage = () => {
+  const navigate = useNavigate();
   const joinSectionRef = useRef(null);
   const podcastSectionRef = useRef(null);
   const [galleryState, setGalleryState] = useState({ isOpen: false, startIndex: 0 });
@@ -119,7 +117,7 @@ const MainApp = ({ navigate, currentPage }) => {
     <>
       <div className="bg-gray-100 font-sans antialiased animate-fade-in" style={{ fontFamily: "'Poppins', sans-serif" }}>
         <AnnouncementBanner onPodcastClick={handleScrollToPodcast} />
-        <HeroSection onJoinClick={handleScrollToJoin} navigate={navigate} currentPage={currentPage} />
+        <HeroSection onJoinClick={handleScrollToJoin} />
         <div ref={podcastSectionRef}>
           <PodcastSection />
         </div>
@@ -211,7 +209,7 @@ const AnnouncementBanner = ({ onPodcastClick }) => (
 );
 
 // --- Core Sections ---
-const HeroSection = ({ onJoinClick, navigate, currentPage }) => {
+const HeroSection = ({ onJoinClick }) => {
   const [waveStyle, setWaveStyle] = useState({ buttonY: 0, rotation: 0, imageOpacity: 0.2 });
   const [isTextVisible, setIsTextVisible] = useState(false);
   const animationFrameId = useRef(null);
@@ -249,7 +247,7 @@ const HeroSection = ({ onJoinClick, navigate, currentPage }) => {
       
       <div className="relative w-full max-w-6xl mx-auto px-2 h-full">
         <div className="absolute top-0 left-0 right-0 z-30 px-2">
-          <TopNavigation navigate={navigate} currentPage={currentPage} />
+          <TopNavigation />
         </div>
         <div className="relative h-full flex flex-col items-center justify-center text-center z-20">
             <div className="relative">
@@ -259,12 +257,16 @@ const HeroSection = ({ onJoinClick, navigate, currentPage }) => {
                 </div>
             </div>
             {/* Arise Button positioned at bottom */}
-            <button
-                onClick={() => navigate('arise')}
-                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 px-8 py-3 bg-black text-white rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 z-10"
+
+            <div className='flex flex-col bg-black text-gray-100 p-8 shadow-[0_0_100px_#ff3c00] absolute bottom-8'>
+              <p>Have an idea in your mind? Give it wings with IEDC ARISE</p>
+                          <Link
+                to="/arise"
+                className=""
             >
-                ARISE - let your ideas soar
-            </button>
+                POST NOW
+            </Link>
+            </div>
         </div>
       </div>
     </div>
@@ -982,14 +984,14 @@ const WhatsAppButton = ({}) => {
 };
 
 // --- Other Page Components ---
-const EventsPage = ({ navigate, currentPage }) => {
+const EventsPage = () => {
   const certificateFolderUrl = "https://drive.google.com/drive/folders/1_WP4BPitPWmPTjqsWC93LnAVfEAcVXli";
   return (
     <div className="bg-gray-50 min-h-screen animate-fade-in" style={{animationDuration: '0.5s'}}>
       <AnnouncementBanner />
       <div className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-6">
-          <TopNavigation navigate={navigate} currentPage={currentPage} />
+          <TopNavigation />
         </div>
       </div>
       <main className="max-w-6xl mx-auto px-6 py-12 sm:py-16">
@@ -1036,7 +1038,7 @@ const TshirtAdPopup = ({ onClose, onKnowMore }) => {
 
 
 
-const TshirtPage = ({ navigate, currentPage }) => {
+const TshirtPage = () => {
   const [formData, setFormData] = useState({ NAME: '', BRANCH: '', YEAR: '', 'TSHIRT SIZE': 'M', 'CONTACT NUMBER': '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -1061,7 +1063,7 @@ const TshirtPage = ({ navigate, currentPage }) => {
     <div className="bg-gray-50 min-h-screen animate-fade-in" style={{animationDuration: '0.5s'}}>
       <div className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-6">
-          <TopNavigation navigate={navigate} currentPage={currentPage} />
+          <TopNavigation />
           {/* This already uses the correct imported TopNavigation */}
         </div>
       </div>

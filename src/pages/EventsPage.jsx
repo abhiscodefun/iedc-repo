@@ -3,7 +3,7 @@ import TopNavigation from '../components/layout/TopNavigation';
 import Footer from '../components/layout/Footer';
 import eventsTreasureHuntImg from '../assets/events_treasure_hunt.jpg';
 
-const EventsPage = ({ navigate, currentPage }) => {
+const EventsPage = () => {
   const eventsPageData = [
     {
       title: "Treasure Hunt",
@@ -25,7 +25,7 @@ const EventsPage = ({ navigate, currentPage }) => {
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-6">
-          <TopNavigation navigate={navigate} currentPage={currentPage} />
+          <TopNavigation />
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-6 py-16">
