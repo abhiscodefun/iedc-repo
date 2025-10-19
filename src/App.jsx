@@ -120,19 +120,9 @@ const HomePage = () => {
         <AnnouncementBanner onPodcastClick={handleScrollToPodcast} />
         <HeroSection onJoinClick={handleScrollToJoin} />
         
+        <AriseSection/>
         <div ref={podcastSectionRef}>
           <PodcastSection />
-        </div>
-  
-        {/* IEDC ARISE Section */}
-        <div className='flex flex-col bg-black text-gray-100 p-8 shadow-[0_0_100px_#ff3c00] absolute bottom-8 z-20'>
-          <p>Have an idea in your mind? Give it wings with IEDC ARISE</p>
-          <Link
-            to="/arise"
-            className="text-white hover:text-gray-300 transition-colors font-semibold mt-2"
-          >
-            POST NOW
-          </Link>
         </div>
         <ContentSection openGallery={openGallery} onImageClick={openUpdateImage} />
         <div ref={joinSectionRef} className="bg-white py-12 sm:py-16">

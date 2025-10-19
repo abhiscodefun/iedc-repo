@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 
 const AriseSection = () => {
   return (
-    <div className='fixed bottom-8 right-8 z-50 flex flex-col bg-black text-gray-100 p-6 rounded-lg shadow-[0_0_100px_#ff3c00] border border-gray-800 hover:shadow-[0_0_150px_#ff3c00] transition-all duration-300'>
-      <p className='text-sm md:text-base font-medium mb-3'>
-        Have an idea in your mind? Give it wings with IEDC ARISE
-      </p>
-      <Link
-        to="/arise"
-        className="bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-2 px-4 rounded-lg hover:from-orange-600 hover:to-red-700 transition-all duration-300 text-center transform hover:scale-105 shadow-lg"
-      >
-        POST NOW
-      </Link>
+    <div className='w-full flex justify-center items-center h-64 bg-gray-200'>
+      <div className='flex flex-col justify-center items-center w-[80%] bg-black h-[80%] shadow-[0_0_30px_#008CFF] rounded-xl text-gray-200'>
+        <span className='mb-2 text-center text-xl'>Have an idea in your mind?</span>
+        <span className='mb-4 bg-gradient-to-r from-red-500 to-gray-400 bg-clip-text text-transparent text-center'>Give it wings with IEDC ARISE</span>
+        <Link
+          to="/arise"
+          className='px-6 py-3 bg-gradient-to-r from-gray-900 to-gray-800 text-white font-md rounded-full hover:shadow-[0_0_20px_#008CFF]'
+        >
+          POST YOUR IDEA
+        </Link>
+      </div>
     </div>
   );
 };
-
 export default AriseSection;

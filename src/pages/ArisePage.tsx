@@ -48,17 +48,17 @@ const ArisePage = () => {
         <div className="flex" style={{ width: "200%" }}>
           <span
             className="text bg-gradient-to-r from-blue-500 to-white text-transparent bg-clip-text
-              text-[10rem] sm:text-[14rem] md:text-[20rem] lg:text-[30rem] font-bold select-none pointer-events-none leading-none
-              flex-shrink-0 animate-first-text"
+              text-[10rem] sm:text-[14rem] md:text-[20rem] lg:text-[30rem] xl:text-[35rem] font-bold select-none pointer-events-none leading-none
+              flex-shrink-0 animate-first-text lg:animate-pulse xl:animate-pulse"
           >
-            ASPIRE
+            ARISE
           </span>
           <span
             className="text bg-gradient-to-r from-blue-500 to-white text-transparent bg-clip-text
-              text-[10rem] sm:text-[14rem] md:text-[20rem] lg:text-[30rem] font-bold select-none pointer-events-none leading-none
-              flex-shrink-0 animate-second-text"
+              text-[10rem] sm:text-[14rem] md:text-[20rem] lg:text-[30rem] xl:text-[35rem] font-bold select-none pointer-events-none leading-none
+              flex-shrink-0 animate-second-text lg:animate-pulse xl:animate-pulse"
           >
-            ASPIRE
+            ARISE
           </span>
         </div>
       </div>
@@ -75,12 +75,20 @@ const ArisePage = () => {
 
       {/* Input Form */}
       <div className="z-10 flex flex-col items-center gap-y-8 w-full px-4 sm:px-8">
-        <input
-          className="bg-gray-900 w-full max-w-4xl text-gray-300 px-4 md:px-6 py-3 md:py-4 placeholder-gray-400 rounded-full
-          shadow-[0_0_30px_20px_#ffffff] focus:outline-red-500 text-sm md:text-base"
-          placeholder="Describe your idea"
+        <textarea
+          className="bg-gray-900 w-full max-w-4xl text-gray-300 px-4 md:px-6 py-3 md:py-4 placeholder-gray-400 rounded-2xl
+          shadow-[0_0_30px_20px_#ffffff] focus:outline-red-500 text-sm md:text-base resize-none overflow-hidden
+          min-h-[60px] max-h-[300px]"
+          placeholder="Describe your idea in detail..."
           value={idea}
-          onChange={(e) => setIdea(e.target.value)}
+          onChange={(e) => {
+            setIdea(e.target.value);
+            // Auto-resize textarea
+            e.target.style.height = 'auto';
+            e.target.style.height = e.target.scrollHeight + 'px';
+          }}
+          rows={3}
+          style={{ minHeight: '60px' }}
         />
 
         <div
@@ -145,6 +153,18 @@ const ArisePage = () => {
           animation: gridMove 8s linear infinite;
         }
 
+        /* Pulse/Breathing animation for larger screens */
+        @keyframes breathe {
+          0%, 100% { transform: scale(1); opacity: 0.8; }
+          50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes pulse-glow {
+          0%, 100% { text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+          50% { text-shadow: 0 0 40px rgba(59, 130, 246, 0.8), 0 0 60px rgba(59, 130, 246, 0.6); }
+        }
+
+        /* Horizontal scroll animations for smaller screens */
         @keyframes first-text {
           0% { transform: translateX(100%); }
           100% { transform: translateX(-100%); }
@@ -154,11 +174,29 @@ const ArisePage = () => {
           100% { transform: translateX(-200%); }
         }
 
-        .animate-first-text {
-          animation: first-text 8s linear infinite;
+        /* Mobile and tablet - horizontal scroll */
+        @media (max-width: 1023px) {
+          .animate-first-text {
+            animation: first-text 8s linear infinite;
+          }
+          .animate-second-text {
+            animation: second-text 8s linear infinite;
+          }
         }
-        .animate-second-text {
-          animation: second-text 8s linear infinite;
+
+        /* Desktop and larger - pulse/breathing effect */
+        @media (min-width: 1024px) {
+          .animate-pulse {
+            animation: breathe 3s ease-in-out infinite, pulse-glow 2s ease-in-out infinite alternate !important;
+          }
+        }
+
+        /* Textarea auto-resize */
+        .auto-resize-textarea {
+          min-height: 60px;
+          max-height: 300px;
+          resize: none;
+          overflow: hidden;
         }
       `}</style>
     </div>
