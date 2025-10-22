@@ -46,7 +46,7 @@ import teamBackgroundVideo from './assets/team_background.mp4';
 import TopNavigation from './components/layout/TopNavigation';
 import PodcastSection from './components/home/PodcastSection';
 import ArisePage from './pages/ArisePage';
-import AriseSection from './components/common/AriseSection';
+
 import { DarkModeProvider } from './hooks/useDarkMode.jsx';
 
 
@@ -120,7 +120,7 @@ const HomePage = () => {
         <AnnouncementBanner onPodcastClick={handleScrollToPodcast} />
         <HeroSection onJoinClick={handleScrollToJoin} />
         
-        <AriseSection/>
+      
         <div ref={podcastSectionRef}>
           <PodcastSection />
         </div>

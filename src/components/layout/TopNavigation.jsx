@@ -23,6 +23,58 @@ const TopNavigation = () => {
         >
           Events
         </Link>
+        <Link
+          to="/arise"
+          className="group relative px-6 py-2 rounded-lg bg-gray-100 transition-all duration-300 
+                    hover:scale-[1.02] outline-button"
+        >
+          {/* Button content */}
+          <span className="relative z-10 font-semibold text-gray-800">
+            Post Idea
+          </span>
+        </Link>
+
+        <style>{`
+          .outline-button {
+            position: relative;
+            border: 2px solid transparent;
+          }
+
+          .outline-button::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 8px;
+            padding: 2px;
+            background: linear-gradient(
+              90deg,
+              #000,
+              #7c3aed,
+              #8b5cf6,
+              #7c3aed,
+              #000
+            );
+            background-size: 200% 100%;
+            -webkit-mask: 
+              linear-gradient(#fff 0 0) content-box, 
+              linear-gradient(#fff 0 0);
+            mask: 
+              linear-gradient(#fff 0 0) content-box, 
+              linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: outlineMove 2s linear infinite;
+          }
+
+          @keyframes outlineMove {
+            0% {
+              background-position: 100% 0;
+            }
+            100% {
+              background-position: -100% 0;
+            }
+          }
+        `}</style>
       </div>
     </nav>
   );

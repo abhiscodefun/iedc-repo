@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { submitIdea } from "../utils/supabase";
 
 const ArisePage = () => {
   // State for form inputs
@@ -17,26 +18,33 @@ const ArisePage = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("/.netlify/functions/sendIdea", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idea, name, college, year, className }),
-      });
+      const ideaData = {
+        idea,
+        name,
+        college,
+        year,
+        className
+      };
 
-      const data = await res.json();
-      if (data.success) {
-        alert("Idea sent to WhatsApp group! ✅");
+      const result = await submitIdea(ideaData);
+
+      if (result.success) {
+        alert("Idea successfully stored in database! ✅");
         setIdea("");
         setName("");
         setCollege("");
         setYear("");
         setClassName("");
       } else {
-        alert("Failed to send idea.");
+        alert("Failed to store idea in database.");
       }
     } catch (err) {
       console.error(err);
-      alert("Error sending idea.");
+      if (err.message && err.message.includes("Database table not found")) {
+        alert("Database is not set up yet. Please contact the administrator.");
+      } else {
+        alert("Error storing idea in database.");
+      }
     }
     setLoading(false);
   };
