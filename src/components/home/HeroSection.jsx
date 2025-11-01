@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 
 const imageList = [
   {
@@ -19,7 +20,8 @@ const imageList = [
   },
 ];
 
-export default function InspirationSection() {
+export default function InspirationSection({ onJoinClick, onContactClick }) {
+  const navigate = useNavigate();
   const CARD_W = 360;
   const CARD_H = 460;
   const inset = 4;
@@ -28,7 +30,7 @@ export default function InspirationSection() {
   const rectH = CARD_H - inset * 2;
   const perimeter = 2 * (rectW + rectH);
 
-  const VISIBLE_DURATION = 4000;
+  const VISIBLE_DURATION = 6000;
   const FLIP_DURATION_MS = 1500;
 
   const [current, setCurrent] = useState(0);
@@ -47,7 +49,8 @@ export default function InspirationSection() {
 
   const PostIdeaButton = () => (
     <button
-      className="px-5 py-2 rounded-full font-semibold border-2 border-cyan-400/70 text-white hover:bg-cyan-400/10 transition-colors duration-300"
+      onClick={() => navigate('/arise')}
+      className="px-5 py-2 rounded-full font-semibold border-2 border-yellow text-white hover:bg-cyan-400/10 transition-colors duration-300"
     >
       Post Idea
     </button>
@@ -57,15 +60,14 @@ export default function InspirationSection() {
     <div className="min-h-screen bg-[#070708] text-white relative">
       {/* Transparent Navbar */}
       <header className="relative bg-transparent text-white">
-        <div className="w-full mx-auto px-6 py- flex items-center justify-between bg-white">
+        <div className="w-full mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between bg-white">
           {/* Left Logos */}
-          <div className="text-black font-semibold text-lg tracking-wide]">
+          <div className="text-black font-semibold text-base md:text-lg tracking-wide">
             IEDC ASET
           </div>
-          <div className="flex items-center gap-4">
-            <img src="/aset_logo.png" alt="ASET" className="h-8 object-contain opacity-90" />
-            <img src="/iedc_logo.jpg" alt="IEDC" className="h-10 object-contain opacity-90" />
-  
+          <div className="flex items-center gap-2 md:gap-4">
+            <img src="/aset_logo.png" alt="ASET" className="h-6 md:h-8 object-contain opacity-90" />
+            <img src="/iedc_logo.jpg" alt="IEDC" className="h-8 md:h-10 object-contain opacity-90" />
           </div>
 
           {/* Center Title */}
@@ -73,7 +75,7 @@ export default function InspirationSection() {
 
           {/* Mobile menu toggle */}
           <button
-            className="md:hidden text-white text-2xl"
+            className="md:hidden text-black text-2xl"
             onClick={() => setMenuOpen((s) => !s)}
             aria-label="menu"
           >
@@ -84,15 +86,15 @@ export default function InspirationSection() {
         {/* Sub-navbar */}
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-center gap-6 md:gap-10">
           <nav className="hidden md:flex items-center gap-8 text-gray-200 font-medium">
-            <a href="#home" className="hover:text-cyan-400 transition-colors">
+            <Link to="/" className="hover:text-cyan-400 transition-colors">
               Home
-            </a>
-            <a href="#events" className="hover:text-cyan-400 transition-colors">
+            </Link>
+            <Link to="/events" className="hover:text-cyan-400 transition-colors">
               Events
-            </a>
-            <a href="#contact" className="hover:text-cyan-400 transition-colors">
+            </Link>
+            <button onClick={onContactClick} className="hover:text-cyan-400 transition-colors text-left">
               Contact
-            </a>
+            </button>
           </nav>
 
           {/* Post Idea button */}
@@ -106,15 +108,15 @@ export default function InspirationSection() {
         {/* Mobile dropdown */}
         {menuOpen && (
           <div className="md:hidden px-4 py-3 flex flex-col gap-3 text-gray-100 bg-black/90 border-t border-white/10">
-            <a href="#home" className="py-1 hover:text-cyan-400">
+            <Link to="/" className="py-1 hover:text-cyan-400" onClick={() => setMenuOpen(false)}>
               Home
-            </a>
-            <a href="#events" className="py-1 hover:text-cyan-400">
+            </Link>
+            <Link to="/events" className="py-1 hover:text-cyan-400" onClick={() => setMenuOpen(false)}>
               Events
-            </a>
-            <a href="#contact" className="py-1 hover:text-cyan-400">
+            </Link>
+            <button onClick={() => { onContactClick(); setMenuOpen(false); }} className="py-1 hover:text-cyan-400 text-left">
               Contact
-            </a>
+            </button>
             <div className="flex gap-3 mt-2">
               <PostIdeaButton />
             </div>
@@ -123,15 +125,18 @@ export default function InspirationSection() {
       </header>
 
       {/* Main Section */}
-      <main className=" pb-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="bg-[#111214] rounded-3xl p-8 md:p-12 shadow-[0_18px_50px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col md:flex-row items-center gap-10">
+      <main className="pt-4 md:pt-8 pb-4 md:pb-12">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="bg-[#111214] rounded-3xl p-6 md:p-12 shadow-[0_18px_50px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col md:flex-row items-center gap-6 md:gap-10">
             {/* LEFT: Person Cards */}
             <div className="w-full md:w-1/2 flex justify-center">
               <div className="relative">
                 <div
                   className="relative bg-black rounded-2xl shadow-2xl border border-gray-700 overflow-hidden"
-                  style={{ width: CARD_W, height: CARD_H }}
+                  style={{ 
+                    width: `min(280px, 90vw, ${CARD_W}px)`, 
+                    height: `min(${Math.round(280 * (CARD_H / CARD_W))}px, calc(90vw * ${CARD_H / CARD_W}), ${CARD_H}px)` 
+                  }}
                 >
                   <AnimatePresence mode="wait">
                     <motion.img
@@ -190,7 +195,7 @@ export default function InspirationSection() {
                 </div>
 
                 {/* Name + Title */}
-                <div className="mt-6 text-center">
+                <div className="mt-4 md:mt-6 text-center">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={imageList[current].name}
@@ -199,10 +204,10 @@ export default function InspirationSection() {
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.5 }}
                     >
-                      <h3 className="text-xl font-semibold text-white drop-shadow-[0_0_10px_rgba(0,180,255,0.18)]">
+                      <h3 className="text-lg md:text-xl font-semibold text-white drop-shadow-[0_0_10px_rgba(196,181,253,0.18)]">
                         {imageList[current].name}
                       </h3>
-                      <p className="text-gray-300 mt-1 text-sm">
+                      <p className="text-gray-300 mt-1 text-xs md:text-sm">
                         {imageList[current].title}
                       </p>
                     </motion.div>
@@ -212,18 +217,21 @@ export default function InspirationSection() {
             </div>
 
             {/* RIGHT: Motivation Text */}
-            <div className="w-full md:w-1/2 text-center md:text-left px-4">
-              <h1 className="text-4xl md:text-6xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-b from-blue-400 to-white drop-shadow-[0_0_12px_rgba(0,150,255,0.15)]">
+            <div className="w-full md:w-1/2 text-center md:text-left px-2 md:px-4">
+              <h1 className="text-3xl md:text-6xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-b from-violet-300 to-white drop-shadow-[0_0_12px_rgba(196,181,253,0.15)]">
                 If they can,
                 <br />
                 You can too.
               </h1>
-              <p className="text-gray-300 mt-6 max-w-lg">
+              <p className="text-gray-300 mt-4 md:mt-6 max-w-lg text-sm md:text-base">
                 Join IEDC to connect with founders, learn from their journeys, and build your own idea.
               </p>
 
-              <div className="mt-8">
-                <button className="px-6 py-3 bg-white text-black font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-transform">
+              <div className="mt-6 md:mt-8">
+                <button 
+                  onClick={onJoinClick}
+                  className="px-6 py-3 bg-white text-black font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-transform text-sm md:text-base"
+                >
                   Join
                 </button>
               </div>

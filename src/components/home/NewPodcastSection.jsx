@@ -30,19 +30,19 @@ const NewPodcastSection = () => {
   });
 
   return (
-    <div className="relative flex flex-col justify-center items-center w-full px-4 py-12 md:py-16 bg-gradient-to-b from-[#0A0A1F] to-[#000005] overflow-hidden">
+    <div className="relative flex flex-col justify-center items-center w-full px-4 py-12 md:py-16 bg-gradient-to-b from-[#111111] to-[#0A0A0A] overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[url(PodcastSection_bg.png)] bg-cover bg-center opacity-20"></div>
 
       {/* Heading */}
       <div className="text-center mb-10 relative z-10">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tighter text-white">
+        <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white">
           IDEAPOD
         </h2>
       </div>
 
       {/* Video Card */}
-      <div className="relative w-full max-w-4xl bg-[#0A0A1F]/90 rounded-2xl overflow-hidden z-10 shadow-lg border border-[#1E1E3A]">
+      <div className="relative w-full max-w-4xl bg-black/90 rounded-0 overflow-hidden z-10 shadow-2xl border border-[#2A2A2A]">
         {/* Video Container */}
         <div className="relative w-full pb-[56.25%]"> {/* 16:9 aspect ratio */}
           {videos.map((videoId, index) => (
@@ -79,7 +79,7 @@ const NewPodcastSection = () => {
         {/* Controls */}
         <div
           {...swipeHandlers}
-          className={`flex items-center justify-between px-8 py-4 bg-[#141426] transition-opacity duration-300 ${
+          className={`flex items-center justify-between px-8 py-4 bg-[#141414] transition-opacity duration-300 ${
             isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
         >

@@ -88,6 +88,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const joinSectionRef = useRef(null);
   const podcastSectionRef = useRef(null);
+  const footerRef = useRef(null);
   const [galleryState, setGalleryState] = useState({ isOpen: false, startIndex: 0 });
   const [updateImage, setUpdateImage] = useState(null);
 
@@ -97,6 +98,10 @@ const HomePage = () => {
 
   const handleScrollToPodcast = () => {
     podcastSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleScrollToFooter = () => {
+    footerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const openGallery = (index) => {
@@ -117,20 +122,22 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="bg-gray-100 font-sans antialiased animate-fade-in" style={{ fontFamily: "'Poppins', sans-serif" }}>
+      <div className="bg-[#111111] antialiased animate-fade-in" style={{ fontFamily: "'Inter', 'Roboto', 'Segoe UI', -apple-system, sans-serif" }}>
         
-        <HeroSection onJoinClick={handleScrollToJoin} />
+        <HeroSection onJoinClick={handleScrollToJoin} onContactClick={handleScrollToFooter} />
         
       
         <div ref={podcastSectionRef}>
           <PodcastSection />
         </div>
         <ContentSection openGallery={openGallery} onImageClick={openUpdateImage} />
-        <div ref={joinSectionRef} className="bg-white py-12 sm:py-16">
+        <div ref={joinSectionRef} className="bg-[#0A0A0A] py-12 sm:py-16">
           <JoinSection />
         </div>
         <WebTeamSection />
-        <Footer />
+        <div ref={footerRef}>
+          <Footer />
+        </div>
       </div>
       {galleryState.isOpen && <FullScreenGallery images={galleryImages} startIndex={galleryState.startIndex} onClose={closeGallery} />}
       {updateImage && (
@@ -192,7 +199,7 @@ const LoadingScreen = ({ isExiting }) => {
 
 // --- Scrolling Announcement Banner ---
 const AnnouncementBanner = ({ onPodcastClick }) => (
-  <div className="text-white bg-black py-4 overflow-hidden shadow-md relative" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+  <div className="text-white bg-[#111111] py-4 overflow-hidden shadow-md relative" style={{ fontFamily: "'Inter', 'Roboto', 'Segoe UI', -apple-system, sans-serif" }}>
     <div className="inline-block animate-marquee whitespace-nowrap" style={{ animationDuration: '15s' }}>
       <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
       <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
@@ -205,7 +212,7 @@ const AnnouncementBanner = ({ onPodcastClick }) => (
     </div>
     <button
       onClick={onPodcastClick}
-      className="absolute right-8 top-1/2 transform -translate-y-1/2 bg-white text-black text-xs font-medium px-4 py-2 rounded-full border-2 border-gray-300 hover:bg-gray-200 transition-colors"
+      className="absolute right-8 top-1/2 transform -translate-y-1/2 bg-violet-300 text-black text-xs font-medium px-4 py-2 rounded-full border-2 border-violet-300 hover:bg-violet-200 transition-colors"
     >
       Listen Now
     </button>
@@ -244,7 +251,7 @@ const eventsData = [
 
 const UpcomingEventsSection = ({ onImageClick }) => {
   return (
-    <div className="bg-white py-12 sm:py-16">
+    <div className="bg-[#0A0A0A] py-12 sm:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <SectionTitle title="Upcoming Events" />
         <div className="mt-12">
@@ -268,7 +275,7 @@ const UpcomingEventsSection = ({ onImageClick }) => {
             ))}
           </Swiper>
           <div className="relative mt-8 h-4 md:hidden">
-            <div className="absolute inset-x-0 bottom-0 h-2 p-1 rounded-full bg-gray-800 border border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.7)]">
+            <div className="absolute inset-x-0 bottom-0 h-2 p-1 rounded-full bg-gray-800 border border-violet-300 shadow-[0_0_15px_rgba(196,181,253,0.7)]">
               <div className="swiper-pagination-custom h-full"></div>
             </div>
           </div>
@@ -298,7 +305,7 @@ const updatesData = [
 ];
 
 const LatestUpdatesSection = ({ onImageClick }) => (
-  <div className="bg-gray-50 py-12 sm:py-16">
+  <div className="bg-[#111111] py-12 sm:py-16">
     <div className="max-w-6xl mx-auto px-6">
       <SectionTitle title="Latest Updates" />
       <div className="mt-12 space-y-8">
@@ -318,7 +325,7 @@ const testimonialsData = [
 
 const TestimonialsSection = () => {
   return (
-    <div className="bg-gray-50 py-12 sm:py-16">
+    <div className="bg-[#0A0A0A] py-12 sm:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <SectionTitle title="What Our Members Say" />
         <div className="mt-12 relative">
@@ -332,19 +339,19 @@ const TestimonialsSection = () => {
           >
             {testimonialsData.map(testimonial => (
               <SwiperSlide key={testimonial.id} className="cursor-grab">
-                <div className="bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100 w-full max-w-3xl mx-auto text-center transform hover:scale-105 transition-all duration-300 ease-in-out hover:shadow-2xl">
+                <div className="bg-[#141414] p-8 md:p-10 rounded-2xl shadow-xl border border-gray-800 w-full max-w-3xl mx-auto text-center transform hover:scale-105 transition-all duration-300 ease-in-out hover:shadow-2xl">
                   <div className="relative">
-                    <svg className="absolute -top-2 -left-2 w-8 h-8 text-blue-500 opacity-20" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="absolute -top-2 -left-2 w-8 h-8 text-violet-300 opacity-20" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
                     </svg>
-                    <p className="text-gray-700 italic text-lg leading-relaxed">"{testimonial.quote}"</p>
-                    <svg className="absolute -bottom-2 -right-2 w-8 h-8 text-blue-500 opacity-20 transform rotate-180" fill="currentColor" viewBox="0 0 24 24">
+                    <p className="text-gray-300 italic text-lg leading-relaxed">"{testimonial.quote}"</p>
+                    <svg className="absolute -bottom-2 -right-2 w-8 h-8 text-violet-300 opacity-20 transform rotate-180" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
                     </svg>
                   </div>
-                  <div className="mt-8 pt-6 border-t border-gray-100">
-                    <p className="font-bold text-gray-900 text-xl">{testimonial.name}</p>
-                    <p className="text-sm text-blue-600 font-medium mt-1">{testimonial.role}</p>
+                  <div className="mt-8 pt-6 border-t border-gray-800">
+                    <p className="font-bold text-white text-xl">{testimonial.name}</p>
+                    <p className="text-sm text-rose-300 font-medium mt-1">{testimonial.role}</p>
                   </div>
                 </div>
               </SwiperSlide>
@@ -376,7 +383,7 @@ const teamData = {
 };
 
 const WebTeamSection = () => (
-  <div id="web-team" className="bg-gray-50 py-12 sm:py-16">
+  <div id="web-team" className="bg-[#111111] py-12 sm:py-16">
     <div className="max-w-6xl mx-auto px-6">
       <SectionTitle title="Web Team" />
       <div className="mt-12">
@@ -405,14 +412,14 @@ const WebTeamSection = () => (
 );
 
 const TeamSection = () => (
-  <div className="bg-gray-50 py-12 sm:py-16">
+  <div className="bg-[#111111] py-12 sm:py-16">
     <div className="max-w-6xl mx-auto px-6">
       <SectionTitle title="Meet the Team" />
-      <h4 className="text-2xl font-bold text-gray-800 text-center mt-16 mb-8">Nodal Officers</h4>
+      <h4 className="text-2xl font-bold text-white text-center mt-16 mb-8">Nodal Officers</h4>
       <div className="flex justify-center gap-8 md:gap-16">
         {teamData.nodalOfficers.map(member => <TeamMemberCard key={member.name} {...member} />)}
       </div>
-      <h4 className="text-2xl font-bold text-gray-800 text-center mt-16 mb-8">Core Team</h4>
+      <h4 className="text-2xl font-bold text-white text-center mt-16 mb-8">Core Team</h4>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 text-center">
         {teamData.coreTeam.map(member => <TeamMemberCard key={member.name} {...member} />)}
       </div>
@@ -433,7 +440,7 @@ const galleryImages = [
 ];
 
 const GallerySection = ({ openGallery }) => (
-  <div className="bg-white py-12 sm:py-16">
+  <div className="bg-[#0A0A0A] py-12 sm:py-16">
     <div className="max-w-6xl mx-auto px-6">
       <SectionTitle title="Gallery" />
       <div className="mt-12">
@@ -470,7 +477,7 @@ const GallerySection = ({ openGallery }) => (
 const WaveBackground = ({ isloading }) => (
   <>
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
       /* Shared Animations */
       @keyframes move-wave { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -483,6 +490,12 @@ const WaveBackground = ({ isloading }) => (
       .animate-fade-in-pop { animation: fade-in-pop 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
       @keyframes fade-in-scale-up { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
       .animate-fade-in-scale-up { animation: fade-in-scale-up 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+      
+      @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .animate-spin-slow { animation: spin-slow linear infinite; }
 
       /* Animation for looping outline */
       @keyframes rotate-outline {
@@ -560,7 +573,7 @@ const WaveBackground = ({ isloading }) => (
       @keyframes fadeInCircuits { to { opacity: 1; } }
 
       .loading-text {
-        font-family: 'Montserrat', sans-serif;
+        font-family: 'Inter', 'Roboto', 'Segoe UI', -apple-system, sans-serif;
         font-size: 70px;
         font-weight: 500;
         letter-spacing: 2px;
@@ -589,8 +602,8 @@ const WaveBackground = ({ isloading }) => (
       .swiper-pagination-custom .swiper-pagination-progressbar { background: rgba(255, 255, 255, 0.2); border-radius: 9999px; height: 100%; }
       .swiper-pagination-custom .swiper-pagination-progressbar .swiper-pagination-progressbar-fill { background: #3B82F6; border-radius: 9999px; }
       .swiper-slide { height: auto; }
-      .gallery-pagination .swiper-pagination-bullet { background-color: #9CA3AF; opacity: 1; transition: all 0.2s ease-in-out; }
-      .gallery-pagination .swiper-pagination-bullet-active { background-color: #3B82F6; transform: scale(1.25); }
+      .gallery-pagination .swiper-pagination-bullet { background-color: rgba(255, 255, 255, 0.4); opacity: 1; transition: all 0.2s ease-in-out; border: 1px solid rgba(255, 255, 255, 0.2); }
+      .gallery-pagination .swiper-pagination-bullet-active { background-color: #3B82F6; transform: scale(1.25); border: 1px solid #3B82F6; }
 
       /* Swiper Navigation Arrows */
       .swiper-button-next, .swiper-button-prev {
@@ -612,16 +625,31 @@ const WaveBackground = ({ isloading }) => (
       .fullscreen-gallery .swiper-button-next,
       .fullscreen-gallery .swiper-button-prev {
         color: #FFFFFF;
-        background-color: rgba(0, 0, 0, 0.4);
+        background-color: rgba(26, 26, 26, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.2);
       }
       .fullscreen-gallery .swiper-button-next:hover,
       .fullscreen-gallery .swiper-button-prev:hover {
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: rgba(26, 26, 26, 1);
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+      
+      .fullscreen-gallery .swiper-wrapper {
+        align-items: center;
       }
       
       .fullscreen-gallery .swiper-slide {
-      display:flex;align-items:center;
-        height: 100%;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 100% !important;
+        width: 100% !important;
+      }
+      
+      .fullscreen-gallery .swiper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     `}</style>
     {!isloading && (
@@ -665,27 +693,27 @@ const JoinButton = ({ onClick }) => (
 const SectionTitle = ({ title }) => (
   <div className="text-center">
     <div className="relative inline-block pb-4">
-      <h3 className="text-4xl sm:text-5xl font-bold text-gray-900">{title}</h3>
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-blue-500 rounded-full"></div>
+      <h3 className="text-4xl sm:text-5xl font-bold text-white">{title}</h3>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-violet-300 rounded-full"></div>
     </div>
   </div>
 );
 
 const EventCard = ({ title, date, imageUrl, altText, description, onImageClick }) => (
-  <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 group flex flex-col h-full">
+  <div className="bg-[#141414] rounded-xl shadow-lg border border-gray-800 overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 group flex flex-col h-full">
     <div className="relative">
-      <div className="w-full h-64 bg-gray-100 flex items-center justify-center">
+      <div className="w-full h-64 bg-gray-900 flex items-center justify-center">
         <img src={imageUrl} alt={altText} className="max-w-full max-h-full object-contain" />
       </div>
-      <div className="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-colors"></div>
-      <div className="absolute top-4 left-4 bg-white text-center rounded-lg shadow-md w-20 py-2">
-        <p className="text-3xl font-extrabold text-blue-600">{date.day}</p>
-        <p className="text-sm font-bold text-gray-600 uppercase tracking-wider">{date.month}</p>
+      <div className="absolute inset-0 bg-white/5 group-hover:bg-white/10 transition-colors"></div>
+      <div className="absolute top-4 left-4 bg-[#1A1A1A] text-center rounded-lg shadow-md w-20 py-2 border border-gray-700">
+        <p className="text-3xl font-extrabold text-violet-300">{date.day}</p>
+        <p className="text-sm font-bold text-gray-300 uppercase tracking-wider">{date.month}</p>
       </div>
     </div>
     <div className="p-6 flex-grow flex flex-col">
-      <h4 className="text-2xl font-bold text-gray-900">{title}</h4>
-      <p className="mt-2 text-gray-600 flex-grow">{description}</p>
+      <h4 className="text-2xl font-bold text-white">{title}</h4>
+      <p className="mt-2 text-gray-400 flex-grow">{description}</p>
 
       {title === "Gaming Competition" && (
         <div className="mt-auto pt-4">
@@ -693,7 +721,7 @@ const EventCard = ({ title, date, imageUrl, altText, description, onImageClick }
             href="https://tinyurl.com/e-football25"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-800 font-semibold text-sm transition-colors underline underline-offset-2 no-swipe"
+            className="text-rose-300 hover:text-rose-200 font-semibold text-sm transition-colors underline underline-offset-2 no-swipe"
           >
             Register Now
           </a>
@@ -706,24 +734,24 @@ const EventCard = ({ title, date, imageUrl, altText, description, onImageClick }
 const UpdateCard = ({ title, date, snippet, imageUrl, onImageClick }) => {
   if (imageUrl) {
     return (
-      <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
+      <div className="bg-[#141414] p-4 rounded-lg shadow-md border border-gray-800 flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
         <div onClick={onImageClick} className="w-full sm:w-48 sm:h-32 rounded-md overflow-hidden flex-shrink-0 cursor-pointer group">
           <img src={imageUrl} alt={title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300" />
         </div>
         <div className="flex-grow sm:pt-2">
-          <p className="text-sm text-gray-500">{date}</p>
-          <h4 className="text-xl font-bold text-gray-900 mt-1">{title}</h4>
-          <p className="text-gray-600 mt-2">{snippet}</p>
+          <p className="text-sm text-gray-400">{date}</p>
+          <h4 className="text-xl font-bold text-white mt-1">{title}</h4>
+          <p className="text-gray-400 mt-2">{snippet}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-      <p className="text-sm text-gray-500">{date}</p>
-      <h4 className="text-xl font-bold text-gray-900 mt-1">{title}</h4>
-      <p className="text-gray-600 mt-2">{snippet}</p>
+    <div className="bg-[#141414] p-6 rounded-lg shadow-md border border-gray-800">
+      <p className="text-sm text-gray-400">{date}</p>
+      <h4 className="text-xl font-bold text-white mt-1">{title}</h4>
+      <p className="text-gray-400 mt-2">{snippet}</p>
     </div>
   );
 };
@@ -752,19 +780,19 @@ const JoinSection = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-6">
-      <div className="bg-white p-8 md:p-12 rounded-lg shadow-md border border-gray-200 min-h-[550px] flex flex-col items-center justify-center">
+      <div className="bg-[#141414] p-8 md:p-12 rounded-lg shadow-md border border-gray-800 min-h-[550px] flex flex-col items-center justify-center">
         {!isSubmitted ? (
           <>
             <SectionTitle title="Register as a member" />
             <form onSubmit={handleSubmit} className="mt-8 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input type="text" name="NAME" placeholder="Name" value={formData.NAME} onChange={handleChange} required className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
-              <input type="text" name="YEAR" placeholder="Year" value={formData.YEAR} onChange={handleChange} required className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
-              <input type="text" name="BRANCH" placeholder="Branch" value={formData.BRANCH} onChange={handleChange} required className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
-              <input type="text" name="SECTION" placeholder="Section" value={formData.SECTION} onChange={handleChange} className="p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" />
-              <div className="md:col-span-2"><input type="tel" name="CONTACT NUMBER" placeholder="Contact Number" value={formData['CONTACT NUMBER']} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" /></div>
-              <div className="md:col-span-2"><input type="email" name="EMAIL ID" placeholder="Email ID" value={formData['EMAIL ID']} onChange={handleChange} required className="w-full p-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition" /></div>
+              <input type="text" name="NAME" placeholder="Name" value={formData.NAME} onChange={handleChange} required className="p-4 bg-gray-900 text-white rounded-lg border-2 border-gray-700 focus:border-violet-300 focus:bg-gray-800 outline-none transition placeholder-gray-500" />
+              <input type="text" name="YEAR" placeholder="Year" value={formData.YEAR} onChange={handleChange} required className="p-4 bg-gray-900 text-white rounded-lg border-2 border-gray-700 focus:border-violet-300 focus:bg-gray-800 outline-none transition placeholder-gray-500" />
+              <input type="text" name="BRANCH" placeholder="Branch" value={formData.BRANCH} onChange={handleChange} required className="p-4 bg-gray-900 text-white rounded-lg border-2 border-gray-700 focus:border-violet-300 focus:bg-gray-800 outline-none transition placeholder-gray-500" />
+              <input type="text" name="SECTION" placeholder="Section" value={formData.SECTION} onChange={handleChange} className="p-4 bg-gray-900 text-white rounded-lg border-2 border-gray-700 focus:border-violet-300 focus:bg-gray-800 outline-none transition placeholder-gray-500" />
+              <div className="md:col-span-2"><input type="tel" name="CONTACT NUMBER" placeholder="Contact Number" value={formData['CONTACT NUMBER']} onChange={handleChange} required className="w-full p-4 bg-gray-900 text-white rounded-lg border-2 border-gray-700 focus:border-violet-300 focus:bg-gray-800 outline-none transition placeholder-gray-500" /></div>
+              <div className="md:col-span-2"><input type="email" name="EMAIL ID" placeholder="Email ID" value={formData['EMAIL ID']} onChange={handleChange} required className="w-full p-4 bg-gray-900 text-white rounded-lg border-2 border-gray-700 focus:border-violet-300 focus:bg-gray-800 outline-none transition placeholder-gray-500" /></div>
               <div className="md:col-span-2 text-center">
-                <button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white font-bold py-4 px-12 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+                <button type="submit" disabled={isSubmitting} className="bg-violet-300 text-black font-bold py-4 px-12 rounded-lg hover:bg-violet-200 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed">
                   {isSubmitting ? 'Submitting...' : 'SUBMIT'}
                 </button>
               </div>
@@ -773,9 +801,9 @@ const JoinSection = () => {
         ) : (
           <div className="text-center animate-fade-in-pop">
             <svg className="w-24 h-24 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <h3 className="mt-6 text-3xl font-bold text-gray-800">Congratulations!</h3>
-            <p className="mt-3 text-lg text-gray-600">You're officially on board. Welcome to the voyage!</p>
-            <p className="mt-1 text-gray-500">We'll be in touch with you shortly.</p>
+            <h3 className="mt-6 text-3xl font-bold text-white">Congratulations!</h3>
+            <p className="mt-3 text-lg text-gray-300">You're officially on board. Welcome to the voyage!</p>
+            <p className="mt-1 text-gray-400">We'll be in touch with you shortly.</p>
           </div>
         )}
       </div>
@@ -786,10 +814,12 @@ const JoinSection = () => {
 const TeamMemberCard = ({ name, role, imageUrl }) => (
   <div className="flex flex-col items-center">
     <div className="relative">
-      <div className="w-40 h-40 md:w-52 md:h-52 rounded-full">
-        <div className="relative w-full h-full rounded-full bg-white p-2 overflow-hidden">
-          <img src={imageUrl} alt={name} className="w-full h-full rounded-full object-cover" />
-          <div className="absolute inset-0 shimmer-effect"></div>
+      <div className="w-40 h-40 md:w-52 md:h-52 rounded-full p-[1px] bg-gradient-to-br from-violet-400 via-blue-400 via-blue-300 to-white rounded-full animate-spin-slow" style={{ animation: 'spin-slow 10s linear infinite' }}>
+        <div className="w-full h-full rounded-full border-8 border-black rounded-full">
+          <div className="relative w-full h-full rounded-full bg-gray-800 overflow-hidden">
+            <img src={imageUrl} alt={name} className="w-full h-full rounded-full object-cover" />
+            <div className="absolute inset-0 shimmer-effect"></div>
+          </div>
         </div>
       </div>
       <style>{`
@@ -826,21 +856,27 @@ const TeamMemberCard = ({ name, role, imageUrl }) => (
         }
       `}</style>
     </div>
-    <h4 className="mt-6 text-base sm:text-lg font-bold text-gray-900">{name}</h4>
-    <p className="text-gray-700 font-semibold text-xs sm:text-sm">{role}</p>
+    <h4 className="mt-6 text-base sm:text-lg font-bold text-white">{name}</h4>
+    <p className="text-gray-300 font-semibold text-xs sm:text-sm">{role}</p>
   </div>
 );
 
 const WebTeamCard = ({ imageUrl, name, role, className }) => (
-  <div className={`flex flex-col items-center bg-white rounded-lg shadow-lg p-4 border border-gray-200 ${className}`}>
-    <img src={imageUrl} alt={name} className="w-40 h-40 rounded-full object-cover mb-4" />
-    <h4 className="text-lg font-bold text-gray-900">{name}</h4>
-    <p className="text-gray-600">{role}</p>
+  <div className={`flex flex-col items-center bg-[#141414] rounded-lg shadow-lg p-4 border border-gray-800 ${className}`}>
+    <div className="relative mb-4">
+      <div className="w-40 h-40 rounded-full p-[1px] bg-gradient-to-br from-violet-400 via-blue-400 via-blue-300 to-white rounded-full animate-spin-slow" style={{ animation: 'spin-slow 10s linear infinite' }}>
+        <div className="w-full h-full rounded-full border-8 border-black rounded-full">
+          <img src={imageUrl} alt={name} className="w-full h-full rounded-full object-cover" />
+        </div>
+      </div>
+    </div>
+    <h4 className="text-lg font-bold text-white">{name}</h4>
+    <p className="text-gray-400">{role}</p>
   </div>
 );
 
 const GalleryImage = ({ imageUrl, alt }) => (
-  <div className="relative overflow-hidden rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 pb-[56.25%] bg-black">
+  <div className="relative overflow-hidden rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 pb-[56.25%] bg-[#111111]">
     <img src={imageUrl} alt={alt} className="absolute inset-0 w-full h-full object-contain" />
   </div>
 );
@@ -862,22 +898,24 @@ const FullScreenGallery = ({ images, startIndex, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm fullscreen-gallery" onClick={onClose}>
-      <button onClick={onClose} className="absolute top-4 right-4 z-[51] text-white text-2xl bg-black/60 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black transition-colors">&times;</button>
+    <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-black/90 backdrop-blur-sm fullscreen-gallery" onClick={onClose}>
+      <button onClick={onClose} className="absolute top-4 right-4 z-[51] text-white text-3xl bg-[#111111]/80 rounded-full w-12 h-12 flex items-center justify-center hover:bg-[#1A1A1A] transition-colors border border-gray-700">&times;</button>
       
-      <div className="w-full h-full" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
         <Swiper
           modules={[Navigation]}
           navigation
           initialSlide={startIndex}
           spaceBetween={50}
           slidesPerView={1}
-          className="w-full h-full"
+          className="w-full h-full !flex items-center justify-center"
           loop={images.length > 1}
         >
           {images.map((img, index) => (
-            <SwiperSlide key={img.id || index} className="flex items-center justify-center p-6">
-              <img src={img.imageUrl} alt={img.alt} className="max-w-full max-h-full object-contain" />
+            <SwiperSlide key={img.id || index} className="!flex items-center justify-center !h-full">
+              <div className="flex items-center justify-center w-full h-full">
+                <img src={img.imageUrl} alt={img.alt} className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain rounded-lg" />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -909,7 +947,7 @@ const WhatsAppButton = ({}) => {
           <form onSubmit={handleSend} className="bg-slate-50 p-4 rounded-lg shadow-2xl mb-2 w-80 border border-slate-200">
             <h3 className="font-bold text-slate-800 text-lg mb-3">Send a Message</h3>
             <textarea className="w-full h-28 p-3 bg-white border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-800 transition" placeholder="Hi, I'd like to know more about..." value={message} onChange={(e) => setMessage(e.target.value)} />
-            <button type="submit" className="w-full mt-3 bg-slate-800 text-white font-bold py-3 px-4 rounded-lg hover:bg-black transition-colors"> Send via WhatsApp </button>
+            <button type="submit" className="w-full mt-3 bg-slate-800 text-white font-bold py-3 px-4 rounded-lg hover:bg-[#1A1A1A] transition-colors"> Send via WhatsApp </button>
           </form>
         </div>
       )}
@@ -928,27 +966,23 @@ const WhatsAppButton = ({}) => {
 const EventsPage = () => {
   const certificateFolderUrl = "https://drive.google.com/drive/folders/1_WP4BPitPWmPTjqsWC93LnAVfEAcVXli";
   return (
-    <div className="bg-gray-50 min-h-screen animate-fade-in" style={{animationDuration: '0.5s'}}>
-      <AnnouncementBanner />
-      <div className="bg-white shadow-sm">
+    <div className="bg-[#111111] min-h-screen antialiased animate-fade-in" style={{ fontFamily: "'Inter', 'Roboto', 'Segoe UI', -apple-system, sans-serif" }}>
+      <div className="bg-[#0A0A0A] py-12 sm:py-16">
         <div className="max-w-6xl mx-auto px-6">
-          <TopNavigation />
-        </div>
-      </div>
-      <main className="max-w-6xl mx-auto px-6 py-12 sm:py-16">
-        <SectionTitle title="Events" />
-        <div className="mt-12 flex justify-center">
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-sm w-full transform hover:-translate-y-2 transition-transform duration-300">
-            <img src={eventsFdpImg} alt="Faculty Development Programme" className="w-full h-56 object-cover" />
-            <div className="p-6 text-center">
-              <h3 className="text-2xl font-bold text-gray-800">3 days Faculty Development Programme</h3>
-              <a href={certificateFolderUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg hover:bg-black transition-colors" >
-                Get Certificate
-              </a>
+          <SectionTitle title="Events" />
+          <div className="mt-12 flex justify-center">
+            <div className="bg-[#141414] rounded-lg shadow-lg overflow-hidden max-w-sm w-full transform hover:-translate-y-2 transition-transform duration-300 border border-gray-800">
+              <img src={eventsFdpImg} alt="Faculty Development Programme" className="w-full h-56 object-cover" />
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold text-white">3 days Faculty Development Programme</h3>
+                <a href={certificateFolderUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-violet-300 text-black font-semibold py-3 px-8 rounded-lg hover:bg-violet-400 transition-colors" >
+                  Get Certificate
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
       <Footer />
     </div>
   );
@@ -956,7 +990,7 @@ const EventsPage = () => {
 
 const TshirtAdPopup = ({ onClose, onKnowMore }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#111111]/60 backdrop-blur-sm">
       <div className="relative bg-white w-full max-w-md mx-auto rounded-2xl shadow-2xl overflow-hidden animate-fade-in-scale-up">
         <button onClick={onClose} className="absolute top-3 right-3 z-10 text-gray-400 hover:text-gray-800 transition-colors">
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -965,10 +999,10 @@ const TshirtAdPopup = ({ onClose, onKnowMore }) => {
           <video src={tshirtAdVideo} autoPlay loop muted playsInline className="w-full h-full object-contain md:object-cover" ></video>
         </div>
         <div className="p-8 text-center">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-blue-600">Exclusive IEDC Merch</h2>
+          <h2 className="text-sm font-bold uppercase tracking-widest text-violet-300">Exclusive IEDC Merch</h2>
           <h3 className="mt-2 text-3xl font-extrabold text-gray-900">Get Your Official IEDC Tee!</h3>
           <p className="mt-4 text-gray-600"> Available exclusively for IEDC ASET members. Show your spirit and be part of the community. </p>
-          <button onClick={onKnowMore} className="mt-8 w-full bg-gray-900 text-white font-bold py-4 px-8 rounded-lg hover:bg-black transform hover:scale-105 transition-all duration-300" >
+          <button onClick={onKnowMore} className="mt-8 w-full bg-gray-900 text-white font-bold py-4 px-8 rounded-lg hover:bg-[#1A1A1A] transform hover:scale-105 transition-all duration-300" >
             Know More
           </button>
         </div>
@@ -1061,36 +1095,36 @@ const Footer = () =>(
           <div className="space-y-5">
             <div className="flex flex-col items-center text-center space-y-2">
               <div className="flex items-center justify-center space-x-2">
-                <svg className="w-5 h-5 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-violet-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
                 <span className="text-xs text-gray-300 font-medium">General inquiries</span>
               </div>
-              <a href="mailto:iedc.ahalia@ahalia.ac.in" className="text-sm hover:text-blue-400 transition-colors break-words">
+              <a href="mailto:iedc.ahalia@ahalia.ac.in" className="text-sm hover:text-violet-300 transition-colors break-words">
                 iedc.ahalia@ahalia.ac.in
               </a>
             </div>
 
             <div className="flex flex-col items-center text-center space-y-2">
               <div className="flex items-center justify-center space-x-2">
-                <svg className="w-5 h-5 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-violet-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
                 <span className="text-xs text-gray-300 font-medium">Vishnu (Student Lead)</span>
               </div>
-              <a href="mailto:vishnu_valiyaparambath@ahalia.ac.in" className="text-sm hover:text-blue-400 transition-colors break-words">
+              <a href="mailto:vishnu_valiyaparambath@ahalia.ac.in" className="text-sm hover:text-violet-300 transition-colors break-words">
                 vishnu_valiyaparambath@ahalia.ac.in
               </a>
             </div>
 
             <div className="flex flex-col items-center text-center space-y-2">
               <div className="flex items-center justify-center space-x-2">
-                <svg className="w-5 h-5 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-violet-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                 </svg>
                 <span className="text-xs text-gray-300 font-medium">Nodal Officer</span>
               </div>
-              <a href="mailto:lakshmy.suresh@ahalia.ac.in" className="text-sm hover:text-blue-400 transition-colors break-words">
+              <a href="mailto:lakshmy.suresh@ahalia.ac.in" className="text-sm hover:text-violet-300 transition-colors break-words">
                 lakshmy.suresh@ahalia.ac.in
               </a>
             </div>
@@ -1101,10 +1135,10 @@ const Footer = () =>(
         <div className="space-y-4">
           <h3 className="text-lg font-bold text-white mb-4">Quick Links</h3>
           <div className="space-y-2 text-sm">
-            <div><a href="#" className="hover:text-blue-400 transition-colors">About IEDC</a></div>
-            <div><a href="#" className="hover:text-blue-400 transition-colors">Events</a></div>
-            <div><a href="#" className="hover:text-blue-400 transition-colors">Team</a></div>
-            <div><a href="#" className="hover:text-blue-400 transition-colors">Gallery</a></div>
+            <div><a href="#" className="hover:text-violet-300 transition-colors">About IEDC</a></div>
+            <div><a href="#" className="hover:text-violet-300 transition-colors">Events</a></div>
+            <div><a href="#" className="hover:text-violet-300 transition-colors">Team</a></div>
+            <div><a href="#" className="hover:text-violet-300 transition-colors">Gallery</a></div>
           </div>
         </div>
 
