@@ -39,6 +39,7 @@ import galleryPic7 from './assets/pics_07.jpg';
 import galleryPic8 from './assets/pics_08.jpg';
 import galleryPic9 from './assets/pics_09.jpg';
 import eventsFdpImg from './assets/events_fdp.jpg';
+import eventsLinkedinWorkshopImg from './assets/events_linkedin_workshop.jpg';
 import tshirtAdVideo from './assets/tshirt_ad.mp4';
 import teamBackgroundVideo from './assets/team_background.mp4';
 
@@ -965,17 +966,30 @@ const WhatsAppButton = ({}) => {
 // --- Other Page Components ---
 const EventsPage = () => {
   const certificateFolderUrl = "https://drive.google.com/drive/folders/1_WP4BPitPWmPTjqsWC93LnAVfEAcVXli";
+  const linkedinWorkshopUrl = "https://drive.google.com/drive/folders/1Gs6SuIBbDwFYAiPfzejGI0vkQfuj1FOD?usp=drive_link";
   return (
     <div className="bg-[#111111] min-h-screen antialiased animate-fade-in" style={{ fontFamily: "'Inter', 'Roboto', 'Segoe UI', -apple-system, sans-serif" }}>
       <div className="bg-[#0A0A0A] py-12 sm:py-16">
         <div className="max-w-6xl mx-auto px-6">
           <SectionTitle title="Events" />
-          <div className="mt-12 flex justify-center">
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 justify-items-center">
+            {/* Faculty Development Programme */}
             <div className="bg-[#141414] rounded-lg shadow-lg overflow-hidden max-w-sm w-full transform hover:-translate-y-2 transition-transform duration-300 border border-gray-800">
               <img src={eventsFdpImg} alt="Faculty Development Programme" className="w-full h-56 object-cover" />
               <div className="p-6 text-center">
                 <h3 className="text-2xl font-bold text-white">3 days Faculty Development Programme</h3>
                 <a href={certificateFolderUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-violet-300 text-black font-semibold py-3 px-8 rounded-lg hover:bg-violet-400 transition-colors" >
+                  Get Certificate
+                </a>
+              </div>
+            </div>
+
+            {/* LinkedIn Workshop */}
+            <div className="bg-[#141414] rounded-lg shadow-lg overflow-hidden max-w-sm w-full transform hover:-translate-y-2 transition-transform duration-300 border border-gray-800">
+              <img src={eventsLinkedinWorkshopImg} alt="LinkedIn Workshop" className="w-full h-56 object-cover" />
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold text-white">LinkedIn Workshop</h3>
+                <a href={linkedinWorkshopUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-violet-300 text-black font-semibold py-3 px-8 rounded-lg hover:bg-violet-400 transition-colors" >
                   Get Certificate
                 </a>
               </div>
@@ -1085,7 +1099,7 @@ const TshirtPage = () => {
 };
 
 const Footer = () =>(
-  <footer className="bg-gray-800 text-gray-300 py-12">
+  <footer className="bg-[#0A0A0A] text-gray-300 py-12 border-t border-gray-800">
     <div className="max-w-6xl mx-auto px-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
 
@@ -1149,7 +1163,7 @@ const Footer = () =>(
             <img src="/aset_logo.jpg" alt="ASET Logo" className="h-10" />
           </div>
           <div className="text-center">
-            <p className="text-sm">&copy; 2025 IEDC ASET - All Rights Reserved</p>
+            <p className="text-sm text-gray-300">&copy; 2025 IEDC ASET - All Rights Reserved</p>
             <p className="text-xs mt-2 text-gray-500">Innovation and Entrepreneurship Development Cell</p>
           </div>
         </div>

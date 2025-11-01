@@ -10,7 +10,7 @@ const imageList = [
   },
   {
     src: "/fl_founder.png",
-    name: "Frankline Josemon",
+    name: "Franklin Josemon",
     title: "Founder - Franklin Lectures",
   },
   {
