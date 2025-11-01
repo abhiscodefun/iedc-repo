@@ -45,6 +45,7 @@ import teamBackgroundVideo from './assets/team_background.mp4';
 // --- Import TopNavigation with logos ---
 import TopNavigation from './components/layout/TopNavigation';
 import PodcastSection from './components/home/PodcastSection';
+import HeroSection from './components/home/HeroSection';
 import ArisePage from './pages/ArisePage';
 
 import { DarkModeProvider } from './hooks/useDarkMode.jsx';
@@ -117,7 +118,7 @@ const HomePage = () => {
   return (
     <>
       <div className="bg-gray-100 font-sans antialiased animate-fade-in" style={{ fontFamily: "'Poppins', sans-serif" }}>
-        <AnnouncementBanner onPodcastClick={handleScrollToPodcast} />
+        
         <HeroSection onJoinClick={handleScrollToJoin} />
         
       
@@ -191,7 +192,7 @@ const LoadingScreen = ({ isExiting }) => {
 
 // --- Scrolling Announcement Banner ---
 const AnnouncementBanner = ({ onPodcastClick }) => (
-  <div className="text-white bg-black py-3 overflow-hidden shadow-md relative" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+  <div className="text-white bg-black py-4 overflow-hidden shadow-md relative" style={{ fontFamily: "'Montserrat', sans-serif" }}>
     <div className="inline-block animate-marquee whitespace-nowrap" style={{ animationDuration: '15s' }}>
       <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
       <span className="mx-8 text-sm font-medium tracking-wider">Our podcast is live!</span>
@@ -212,59 +213,6 @@ const AnnouncementBanner = ({ onPodcastClick }) => (
 );
 
 // --- Core Sections ---
-const HeroSection = ({ onJoinClick }) => {
-  const [waveStyle, setWaveStyle] = useState({ buttonY: 0, rotation: 0, imageOpacity: 0.2 });
-  const [isTextVisible, setIsTextVisible] = useState(false);
-  const animationFrameId = useRef(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsTextVisible(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const animate = () => {
-      const time = performance.now() * 0.001;
-      const sineWave = Math.sin(time * 1.5);
-      const cosineWave = Math.cos(time * 1.5);
-      const buttonY = 8 * sineWave;
-      const rotation = 2 * cosineWave;
-      const imageOpacity = 0.4 - 0.2 * sineWave; 
-      setWaveStyle({ buttonY, rotation, imageOpacity });
-      animationFrameId.current = requestAnimationFrame(animate);
-    };
-    animationFrameId.current = requestAnimationFrame(animate);
-    return () => { if (animationFrameId.current) { cancelAnimationFrame(animationFrameId.current); } };
-  }, []);
-
-  return (
-    <div className="relative h-[700px] w-full flex flex-col items-center overflow-hidden bg-gray-100">
-      <WaveBackground />
-      <img 
-        src="https://wallpapers.com/images/high/iconic-black-turtleneck-portrait-zbmouypwoxbs22k1.png" 
-        alt="Inspiration" 
-        className="hidden md:block absolute bottom-0 left-0 w-auto h-full max-h-[500px] z-10 pointer-events-none transition-opacity duration-500 ease-in-out" 
-        style={{ opacity: waveStyle.imageOpacity }} 
-        onError={(e) => { e.target.style.display = 'none'; }} 
-      />
-      
-      <div className="relative w-full max-w-6xl mx-auto px-2 h-full">
-        <div className="absolute top-0 left-0 right-0 z-30 px-2">
-          <TopNavigation />
-        </div>
-        <div className="relative h-full flex flex-col items-center justify-center text-center z-20">
-            <div className="relative">
-                <HeroText isVisible={isTextVisible} />
-                <div className="mt-12" style={{ transform: `translateY(${waveStyle.buttonY}px) rotate(${waveStyle.rotation}deg)` }}>
-                    <JoinButton onClick={onJoinClick} />
-                </div>
-            </div>
-            
-        </div>
-      </div>
-    </div>
-  );
-};
 
 
 const ContentSection = ({ openGallery, onImageClick }) => (

@@ -1,82 +1,236 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
-import { Link } from 'react-router-dom';
-import TopNavigation from '../layout/TopNavigation';
+import React, { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const HeroText = memo(({ isVisible }) => (
-  <div className={`transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-    <h1 className="text-5xl md:text-7xl font-bold mb-4">
-      Innovation and<br />Entrepreneurship<br />Development Cell
-    </h1>
-    <p className="text-xl md:text-2xl text-gray-600">
-      SNGCE • 2023-24
-    </p>
-  </div>
-));
+const imageList = [
+  {
+    src: "/xylem_founder.png",
+    name: "Ananthu S",
+    title: "Founder - Xylem Learning",
+  },
+  {
+    src: "/fl_founder.png",
+    name: "Frankline Josemon",
+    title: "Founder - Franklin Lectures",
+  },
+  {
+    src: "/entri_founder.png",
+    name: "Mohammed Nisham",
+    title: "Founder - Entri Learning",
+  },
+];
 
-const JoinButton = memo(({ onClick }) => (
-  <button
-    onClick={onClick}
-    className="px-8 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-  >
-    Join IEDC
-  </button>
-));
+export default function InspirationSection() {
+  const CARD_W = 360;
+  const CARD_H = 460;
+  const inset = 4;
+  const rx = 20;
+  const rectW = CARD_W - inset * 2;
+  const rectH = CARD_H - inset * 2;
+  const perimeter = 2 * (rectW + rectH);
 
-const HeroSection = ({ onJoinClick }) => {
-  const [waveStyle, setWaveStyle] = useState({ buttonY: 0, rotation: 0 });
-  const [isTextVisible, setIsTextVisible] = useState(false);
+  const VISIBLE_DURATION = 4000;
+  const FLIP_DURATION_MS = 1500;
+
+  const [current, setCurrent] = useState(0);
+  const [tracerHidden, setTracerHidden] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
-    let frame;
-    let startTime = Date.now();
-
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const buttonY = Math.sin(elapsed / 1000) * 10;
-      const rotation = Math.sin(elapsed / 1500) * 2;
-
-      setWaveStyle({ buttonY, rotation });
-      frame = requestAnimationFrame(animate);
-    };
-
-    frame = requestAnimationFrame(animate);
-    const textTimer = setTimeout(() => setIsTextVisible(true), 500);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      clearTimeout(textTimer);
-    };
+    intervalRef.current = setInterval(() => {
+      setTracerHidden(true);
+      setCurrent((p) => (p + 1) % imageList.length);
+      setTimeout(() => setTracerHidden(false), FLIP_DURATION_MS);
+    }, VISIBLE_DURATION);
+    return () => clearInterval(intervalRef.current);
   }, []);
 
+  const PostIdeaButton = () => (
+    <button
+      className="px-5 py-2 rounded-full font-semibold border-2 border-cyan-400/70 text-white hover:bg-cyan-400/10 transition-colors duration-300"
+    >
+      Post Idea
+    </button>
+  );
+
   return (
-    <div className="relative h-[700px] bg-gray-50">
-      <div className="relative w-full max-w-6xl mx-auto px-6">
-        <div className="absolute top-0 left-0 right-0 px-6">
-          <TopNavigation />
+    <div className="min-h-screen bg-[#070708] text-white relative">
+      {/* Transparent Navbar */}
+      <header className="relative bg-transparent text-white">
+        <div className="w-full mx-auto px-6 py- flex items-center justify-between bg-white">
+          {/* Left Logos */}
+          <div className="text-black font-semibold text-lg tracking-wide]">
+            IEDC ASET
+          </div>
+          <div className="flex items-center gap-4">
+            <img src="/aset_logo.png" alt="ASET" className="h-8 object-contain opacity-90" />
+            <img src="/iedc_logo.jpg" alt="IEDC" className="h-10 object-contain opacity-90" />
+  
+          </div>
+
+          {/* Center Title */}
+
+
+          {/* Mobile menu toggle */}
+          <button
+            className="md:hidden text-white text-2xl"
+            onClick={() => setMenuOpen((s) => !s)}
+            aria-label="menu"
+          >
+            ☰
+          </button>
         </div>
-        <div className="relative h-full flex items-center">
-          <div className="relative">
-            <HeroText isVisible={isTextVisible} />
-            <div
-              className="mt-12"
-              style={{
-                transform: `translateY(${waveStyle.buttonY}px) rotate(${waveStyle.rotation}deg)`
-              }}
-            >
-              <JoinButton onClick={onJoinClick} />
+
+        {/* Sub-navbar */}
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-center gap-6 md:gap-10">
+          <nav className="hidden md:flex items-center gap-8 text-gray-200 font-medium">
+            <a href="#home" className="hover:text-cyan-400 transition-colors">
+              Home
+            </a>
+            <a href="#events" className="hover:text-cyan-400 transition-colors">
+              Events
+            </a>
+            <a href="#contact" className="hover:text-cyan-400 transition-colors">
+              Contact
+            </a>
+          </nav>
+
+          {/* Post Idea button */}
+          <div className="flex items-center gap-4 ml-2">
+            <div className="hidden md:inline-block">
+              <PostIdeaButton />
             </div>
           </div>
-          {/* Arise Button positioned at bottom */}
-          <Link
-            to="/arise"
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 px-8 py-3 bg-black text-white rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 z-10"
-          >
-            ARISE - let your ideas soar
-          </Link>
         </div>
-      </div>
+
+        {/* Mobile dropdown */}
+        {menuOpen && (
+          <div className="md:hidden px-4 py-3 flex flex-col gap-3 text-gray-100 bg-black/90 border-t border-white/10">
+            <a href="#home" className="py-1 hover:text-cyan-400">
+              Home
+            </a>
+            <a href="#events" className="py-1 hover:text-cyan-400">
+              Events
+            </a>
+            <a href="#contact" className="py-1 hover:text-cyan-400">
+              Contact
+            </a>
+            <div className="flex gap-3 mt-2">
+              <PostIdeaButton />
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Main Section */}
+      <main className=" pb-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="bg-[#111214] rounded-3xl p-8 md:p-12 shadow-[0_18px_50px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col md:flex-row items-center gap-10">
+            {/* LEFT: Person Cards */}
+            <div className="w-full md:w-1/2 flex justify-center">
+              <div className="relative">
+                <div
+                  className="relative bg-black rounded-2xl shadow-2xl border border-gray-700 overflow-hidden"
+                  style={{ width: CARD_W, height: CARD_H }}
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={imageList[current].src}
+                      src={imageList[current].src}
+                      alt={imageList[current].name}
+                      initial={{ rotateY: 90, opacity: 0 }}
+                      animate={{ rotateY: 0, opacity: 1 }}
+                      exit={{ rotateY: -90, opacity: 0 }}
+                      transition={{
+                        duration: FLIP_DURATION_MS / 1000,
+                        ease: "easeInOut",
+                      }}
+                      className="w-full h-full object-cover"
+                    />
+                  </AnimatePresence>
+
+                  {/* Neon Tracer Lines */}
+                  <motion.div
+                    className="absolute inset-0 pointer-events-none"
+                    animate={{ opacity: tracerHidden ? 0 : 1 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <svg viewBox={`0 0 ${CARD_W} ${CARD_H}`} className="w-full h-full">
+                      <defs>
+                        <linearGradient id="g1" x1="0" x2="1">
+                          <stop offset="0%" stopColor="#00bfff" />
+                          <stop offset="60%" stopColor="#a0e9ff" />
+                          <stop offset="100%" stopColor="#fff6c2" />
+                        </linearGradient>
+                      </defs>
+                      <rect
+                        x={inset}
+                        y={inset}
+                        width={rectW}
+                        height={rectH}
+                        rx={rx}
+                        ry={rx}
+                        fill="none"
+                        stroke="url(#g1)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeDasharray={`${Math.round(perimeter * 0.12)} ${Math.round(
+                          perimeter - perimeter * 0.12
+                        )}`}
+                      >
+                        <animate
+                          attributeName="stroke-dashoffset"
+                          dur="6s"
+                          repeatCount="indefinite"
+                          values={`0; -${perimeter}`}
+                        />
+                      </rect>
+                    </svg>
+                  </motion.div>
+                </div>
+
+                {/* Name + Title */}
+                <div className="mt-6 text-center">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={imageList[current].name}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <h3 className="text-xl font-semibold text-white drop-shadow-[0_0_10px_rgba(0,180,255,0.18)]">
+                        {imageList[current].name}
+                      </h3>
+                      <p className="text-gray-300 mt-1 text-sm">
+                        {imageList[current].title}
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT: Motivation Text */}
+            <div className="w-full md:w-1/2 text-center md:text-left px-4">
+              <h1 className="text-4xl md:text-6xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-b from-blue-400 to-white drop-shadow-[0_0_12px_rgba(0,150,255,0.15)]">
+                If they can,
+                <br />
+                You can too.
+              </h1>
+              <p className="text-gray-300 mt-6 max-w-lg">
+                Join IEDC to connect with founders, learn from their journeys, and build your own idea.
+              </p>
+
+              <div className="mt-8">
+                <button className="px-6 py-3 bg-white text-black font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-transform">
+                  Join
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
-};
-
-export default HeroSection;
+}
