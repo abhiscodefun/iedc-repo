@@ -1,14 +1,23 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { submitIdea } from "../utils/supabase";
 
 const ArisePage = () => {
   // State for form inputs
   const [idea, setIdea] = useState("");
+  const [ideaTitle, setIdeaTitle] = useState("");
   const [name, setName] = useState("");
   const [college, setCollege] = useState("");
   const [year, setYear] = useState("");
   const [className, setClassName] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const jitter = {
+    whileFocus: {
+      x: [0, -3, 3, -3, 3, 0],
+      transition: { duration: 0.4 },
+    },
+  };
 
   const handleSubmit = async () => {
     if (!idea || !name || !college || !year || !className) {
@@ -19,7 +28,7 @@ const ArisePage = () => {
     setLoading(true);
     try {
       const ideaData = {
-        idea,
+        idea: ideaTitle ? `${ideaTitle}\n\n${idea}` : idea,
         name,
         college,
         year,
@@ -31,6 +40,7 @@ const ArisePage = () => {
       if (result.success) {
         alert("Idea successfully stored in database! ✅");
         setIdea("");
+        setIdeaTitle("");
         setName("");
         setCollege("");
         setYear("");
@@ -50,163 +60,298 @@ const ArisePage = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col justify-end items-center overflow-hidden bg-gradient-to-br from-gray-900 via-black to-[#332702]">
-      {/* Scrolling Big Text */}
-      <div className="absolute top-0 w-full overflow-hidden z-[5]">
-        <div className="flex" style={{ width: "200%" }}>
-          <span
-            className="text bg-gradient-to-r from-blue-500 to-white text-transparent bg-clip-text
-              text-[10rem] sm:text-[14rem] md:text-[20rem] lg:text-[30rem] xl:text-[35rem] font-bold select-none pointer-events-none leading-none
-              flex-shrink-0 animate-first-text lg:animate-pulse xl:animate-pulse"
-          >
-            ARISE
-          </span>
-          <span
-            className="text bg-gradient-to-r from-blue-500 to-white text-transparent bg-clip-text
-              text-[10rem] sm:text-[14rem] md:text-[20rem] lg:text-[30rem] xl:text-[35rem] font-bold select-none pointer-events-none leading-none
-              flex-shrink-0 animate-second-text lg:animate-pulse xl:animate-pulse"
-          >
-            ARISE
-          </span>
-        </div>
-      </div>
+    <div
+      className="flex flex-col justify-between min-h-screen bg-gradient-to-br 
+      from-[#000000] via-[#050505] to-[#0a0a0a] relative overflow-hidden text-gray-200"
+      style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}
+    >
+      {/* PERSON IMAGE (hidden on mobile) */}
+      <motion.img
+        initial={{ y: 600, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1.8, ease: "easeOut" }}
+        className="hidden md:block absolute bottom-[35vh] left-1/2 -translate-x-1/2 
+        md:left-auto md:right-[15vw] max-h-[60vh] z-0 select-none"
+        src="/tovino.png"
+        alt="person"
+      />
 
-      {/* Animated Perspective Grid */}
-      <div
-        className="absolute bottom-0 w-full h-[120vh] origin-bottom rotate-x-[70deg]
-        bg-[linear-gradient(#ffffff22_1px,transparent_1px),linear-gradient(90deg,#ffffff22_1px,transparent_1px)]
-        bg-[size:60px_60px] animate-gridMove perspective-1000 z-0"
-      ></div>
-
-      {/* Glow Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-[2]"></div>
-
-      {/* Input Form */}
-      <div className="z-10 flex flex-col items-center gap-y-8 w-full px-4 sm:px-8">
-        <textarea
-          className="bg-gray-900 w-full max-w-4xl text-gray-300 px-4 md:px-6 py-3 md:py-4 placeholder-gray-400 rounded-2xl
-          shadow-[0_0_30px_20px_#ffffff] focus:outline-red-500 text-sm md:text-base resize-none overflow-hidden
-          min-h-[60px] max-h-[300px]"
-          placeholder="Describe your idea in detail..."
-          value={idea}
-          onChange={(e) => {
-            setIdea(e.target.value);
-            // Auto-resize textarea
-            e.target.style.height = 'auto';
-            e.target.style.height = e.target.scrollHeight + 'px';
+      {/* HEADING */}
+      <motion.div
+        initial={{ x: -150, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 1.9, duration: 1, ease: "easeOut" }}
+        className="z-20"
+      >
+        {/* Desktop heading */}
+        <h1
+          style={{
+            fontFamily: "Impact, Haettenschweiler, 'Arial Black', sans-serif",
+            letterSpacing: "3px",
           }}
-          rows={3}
-          style={{ minHeight: '60px' }}
-        />
-
-        <div
-          className="flex flex-col justify-center items-center gap-x-32 gap-y-8 p-4 md:p-8 w-full max-w-4xl
-          bg-gradient-to-r from-black to-[#00091a]/40 rounded-2xl backdrop-blur-md"
+          className="hidden md:block absolute top-16 left-[6vw] text-7xl lg:text-9xl font-extrabold 
+          bg-gradient-to-r from-gray-300 via-cyan-300 to-blue-400 bg-clip-text text-transparent 
+          drop-shadow-[0_0_25px_rgba(0,0,0,0.8)] leading-tight"
         >
-          <div className="flex flex-col md:flex-row gap-x-32 gap-y-8 w-full">
-            <div className="p-4 md:p-8 bg-transparent flex flex-col w-full">
-              <input
-                type="text"
+          YOUR IDEAS<br />MATTER
+        </h1>
+
+        {/* Mobile heading */}
+        <div className="md:hidden mt-20 text-center px-4">
+          <h1
+            style={{
+              fontFamily: "Impact, Haettenschweiler, 'Arial Black', sans-serif",
+              letterSpacing: "2px",
+            }}
+            className="text-6xl sm:text-7xl font-extrabold bg-gradient-to-r 
+            from-gray-300 via-cyan-300 to-blue-400 bg-clip-text text-transparent 
+            drop-shadow-[0_0_25px_rgba(0,0,0,0.8)] leading-tight"
+          >
+            YOUR IDEAS<br />MATTER
+          </h1>
+        </div>
+      </motion.div>
+
+      {/* ===== DESKTOP SECTION ===== */}
+      <div className="hidden md:flex flex-col md:flex-row justify-between items-end absolute bottom-0 w-full px-8 md:px-16 gap-8 z-10">
+        {/* Left Form */}
+        <div className="flex flex-col gap-6 w-full md:w-[35vw] text-sm text-gray-300 mb-6 p-6 bg-[#0a0a0a]/85 rounded-3xl border border-gray-800 shadow-[0_0_25px_-5px_rgba(0,255,255,0.1)]">
+          {/* First pair: Name, College */}
+          <div className="flex justify-between gap-4">
+            <motion.div
+              className="flex-1 rounded-full transition-all duration-300 focus-within:p-[1px] 
+              focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400"
+            >
+              <motion.input
+                whileFocus="whileFocus"
+                variants={jitter}
+                className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+                focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
                 placeholder="Name"
-                className="m-1 p-2 md:p-3 bg-transparent text-white border-b-2 border-blue-700 focus:outline-none text-sm md:text-base w-full"
+                type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-              <input
-                type="text"
+            </motion.div>
+
+            <motion.div
+              className="flex-1 rounded-full transition-all duration-300 focus-within:p-[1px] 
+              focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400"
+            >
+              <motion.input
+                whileFocus="whileFocus"
+                variants={jitter}
+                className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+                focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
                 placeholder="College"
-                className="m-1 p-2 md:p-3 bg-transparent text-white border-b-2 border-blue-700 focus:outline-none text-sm md:text-base w-full"
+                type="text"
                 value={college}
                 onChange={(e) => setCollege(e.target.value)}
               />
-            </div>
+            </motion.div>
+          </div>
 
-            <div className="p-4 md:p-8 bg-transparent flex flex-col w-full">
-              <input
+          {/* Second pair: Year, Class */}
+          <div className="flex justify-between gap-4">
+            <motion.div
+              className="flex-1 rounded-full transition-all duration-300 focus-within:p-[1px] 
+              focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400"
+            >
+              <motion.input
+                whileFocus="whileFocus"
+                variants={jitter}
+                className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+                focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
+                placeholder="Year"
                 type="text"
-                placeholder="Current Year"
-                className="m-1 p-2 md:p-3 bg-transparent text-white border-b-2 border-blue-700 focus:outline-none text-sm md:text-base w-full"
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
               />
-              <input
-                type="text"
+            </motion.div>
+
+            <motion.div
+              className="flex-1 rounded-full transition-all duration-300 focus-within:p-[1px] 
+              focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400"
+            >
+              <motion.input
+                whileFocus="whileFocus"
+                variants={jitter}
+                className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+                focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
                 placeholder="Class"
-                className="m-1 p-2 md:p-3 bg-transparent text-white border-b-2 border-blue-700 focus:outline-none text-sm md:text-base w-full"
+                type="text"
                 value={className}
                 onChange={(e) => setClassName(e.target.value)}
               />
-            </div>
+            </motion.div>
           </div>
 
-          <button
-            className="w-full md:w-48 bg-[#5B4FFF] p-2 md:p-3 rounded-2xl font-bold font-sans
-            bg-gradient-to-r from-[#514DFF] via-black to-[#514DFF] hover:text-gray-200
-            text-base md:text-lg text-[#7C78E3]"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? "Sending..." : "SUBMIT"}
-          </button>
+          {/* Third pair: Optional/Placeholder - keeping visual consistency */}
+          <div className="flex justify-between gap-4">
+            <motion.div
+              className="flex-1 rounded-full transition-all duration-300 focus-within:p-[1px] 
+              focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400 opacity-50"
+            >
+              <motion.input
+                whileFocus="whileFocus"
+                variants={jitter}
+                className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+                focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
+                placeholder="Optional"
+                type="text"
+                disabled
+              />
+            </motion.div>
+
+            <motion.div
+              className="flex-1 rounded-full transition-all duration-300 focus-within:p-[1px] 
+              focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400 opacity-50"
+            >
+              <motion.input
+                whileFocus="whileFocus"
+                variants={jitter}
+                className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+                focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
+                placeholder="Optional"
+                type="text"
+                disabled
+              />
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Right Idea Box */}
+        <div className="relative w-full md:w-[50vw] bg-[#111] rounded-t-3xl rounded-b-none p-6 pb-0 z-10 shadow-[0_0_50px_-5px_theme(colors.blue.300)] border border-gray-800">
+          <input
+            className="w-full mb-4 bg-[#1b1b1b] border border-gray-800 rounded-full px-6 py-3 text-gray-100 
+            text-base focus:outline-none focus:ring-1 focus:ring-white placeholder-gray-400"
+            placeholder="Enter idea title..."
+            type="text"
+            value={ideaTitle}
+            onChange={(e) => setIdeaTitle(e.target.value)}
+          />
+          <div className="relative w-full h-[35vh]">
+            <textarea
+              className="w-full h-full bg-[#1b1b1b] border border-gray-800 rounded-t-3xl rounded-b-none 
+              p-8 text-gray-100 text-lg resize-none focus:outline-none focus:ring-1 focus:ring-yellow-100 
+              placeholder-gray-400"
+              placeholder="Describe your idea here..."
+              value={idea}
+              onChange={(e) => setIdea(e.target.value)}
+            />
+            <button
+              className="absolute bottom-4 right-6 bg-white text-[#222] font-bold px-6 py-2 rounded-full 
+              border border-green-400 shadow-[0_0_10px_1px_rgba(0,255,0,0.15)] 
+              focus:outline-none hover:border-red-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? "SENDING..." : "SUBMIT"}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Custom Animation */}
-      <style>{`
-        @keyframes gridMove {
-          0% { background-position: 0 0, 0 0; }
-          100% { background-position: 0 60px, 60px 0; }
-        }
-        .animate-gridMove {
-          animation: gridMove 8s linear infinite;
-        }
+      {/* ===== MOBILE STACKED SECTION ===== */}
+      <div className="flex flex-col md:hidden items-center w-full px-4 mt-10 gap-6 z-10">
+        {/* Form Section */}
+        <div className="flex flex-col gap-4 w-full text-sm text-gray-300 p-5 bg-[#121212]/90 rounded-3xl border border-gray-800 shadow-[0_0_25px_-5px_rgba(0,255,255,0.1)]">
+          <motion.div
+            className="rounded-full transition-all duration-300 focus-within:p-[1px] 
+            focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400"
+          >
+            <motion.input
+              whileFocus="whileFocus"
+              variants={jitter}
+              className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+              focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
+              placeholder="Name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </motion.div>
 
-        /* Pulse/Breathing animation for larger screens */
-        @keyframes breathe {
-          0%, 100% { transform: scale(1); opacity: 0.8; }
-          50% { transform: scale(1.05); opacity: 1; }
-        }
+          <motion.div
+            className="rounded-full transition-all duration-300 focus-within:p-[1px] 
+            focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400"
+          >
+            <motion.input
+              whileFocus="whileFocus"
+              variants={jitter}
+              className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+              focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
+              placeholder="College"
+              type="text"
+              value={college}
+              onChange={(e) => setCollege(e.target.value)}
+            />
+          </motion.div>
 
-        @keyframes pulse-glow {
-          0%, 100% { text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-          50% { text-shadow: 0 0 40px rgba(59, 130, 246, 0.8), 0 0 60px rgba(59, 130, 246, 0.6); }
-        }
+          <motion.div
+            className="rounded-full transition-all duration-300 focus-within:p-[1px] 
+            focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400"
+          >
+            <motion.input
+              whileFocus="whileFocus"
+              variants={jitter}
+              className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+              focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
+              placeholder="Year"
+              type="text"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+            />
+          </motion.div>
 
-        /* Horizontal scroll animations for smaller screens */
-        @keyframes first-text {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
-        }
-        @keyframes second-text {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-200%); }
-        }
+          <motion.div
+            className="rounded-full transition-all duration-300 focus-within:p-[1px] 
+            focus-within:bg-gradient-to-r focus-within:from-pink-500 focus-within:via-red-500 focus-within:to-orange-400"
+          >
+            <motion.input
+              whileFocus="whileFocus"
+              variants={jitter}
+              className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
+              focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
+              placeholder="Class"
+              type="text"
+              value={className}
+              onChange={(e) => setClassName(e.target.value)}
+            />
+          </motion.div>
+        </div>
 
-        /* Mobile and tablet - horizontal scroll */
-        @media (max-width: 1023px) {
-          .animate-first-text {
-            animation: first-text 8s linear infinite;
-          }
-          .animate-second-text {
-            animation: second-text 8s linear infinite;
-          }
-        }
-
-        /* Desktop and larger - pulse/breathing effect */
-        @media (min-width: 1024px) {
-          .animate-pulse {
-            animation: breathe 3s ease-in-out infinite, pulse-glow 2s ease-in-out infinite alternate !important;
-          }
-        }
-
-        /* Textarea auto-resize */
-        .auto-resize-textarea {
-          min-height: 60px;
-          max-height: 300px;
-          resize: none;
-          overflow: hidden;
-        }
-      `}</style>
+        {/* Idea Section */}
+        <div className="relative w-full bg-[#111] rounded-t-3xl rounded-b-none p-5 pb-0 border border-gray-800 shadow-[0_0_20px_-10px_rgba(0,255,255,0.2)]">
+          <input
+            className="w-full mb-4 bg-[#1b1b1b] border border-gray-800 rounded-full px-5 py-3 
+            text-gray-100 text-sm focus:outline-none focus:ring-1 focus:ring-white placeholder-gray-400"
+            placeholder="Enter idea title..."
+            type="text"
+            value={ideaTitle}
+            onChange={(e) => setIdeaTitle(e.target.value)}
+          />
+          <div className="relative w-full h-[30vh]">
+            <textarea
+              className="w-full h-full bg-[#1b1b1b] border border-gray-800 rounded-t-3xl rounded-b-none 
+              p-6 text-gray-100 text-base resize-none focus:outline-none focus:ring-1 focus:ring-yellow-100 
+              placeholder-gray-400"
+              placeholder="Describe your idea here..."
+              value={idea}
+              onChange={(e) => setIdea(e.target.value)}
+            />
+            <button
+              className="absolute bottom-4 right-4 bg-white text-[#222] font-bold px-6 py-2 rounded-full 
+              border border-green-400 shadow-[0_0_10px_1px_rgba(0,255,0,0.15)] 
+              focus:outline-none hover:border-red-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? "SENDING..." : "SUBMIT"}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
