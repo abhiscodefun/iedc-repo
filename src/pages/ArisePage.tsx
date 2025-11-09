@@ -20,19 +20,28 @@ const ArisePage = () => {
   };
 
   const handleSubmit = async () => {
-    if (!idea || !name || !college || !year || !className) {
-      alert("Please fill all fields");
+    // Validation according to SQL schema:
+    // Required (NOT NULL): idea, name, college, year
+    // Optional (nullable): class
+    if (!idea || !name || !college || !year) {
+      alert("Please fill all required fields: Idea, Name, College, and Year");
       return;
     }
 
     setLoading(true);
     try {
+      // Map form fields to database columns according to SQL schema:
+      // - idea (TEXT NOT NULL): combine ideaTitle and idea if title exists
+      // - name (TEXT NOT NULL): direct mapping
+      // - college (TEXT NOT NULL): direct mapping
+      // - year (TEXT NOT NULL): direct mapping
+      // - class (TEXT, nullable): optional, map from className
       const ideaData = {
         idea: ideaTitle ? `${ideaTitle}\n\n${idea}` : idea,
-        name,
-        college,
-        year,
-        className
+        name: name.trim(),
+        college: college.trim(),
+        year: year.trim(),
+        className: className.trim() // class is nullable in SQL, handled in supabase.js
       };
 
       const result = await submitIdea(ideaData);
@@ -46,17 +55,17 @@ const ArisePage = () => {
         setYear("");
         setClassName("");
       } else {
-        alert("Failed to store idea in database.");
+        // Show detailed error message
+        const errorMsg = result.error || "Failed to store idea in database.";
+        alert(`Error: ${errorMsg}\n\nCheck the console for more details.`);
+        console.error("Submission error details:", result.errorDetails);
       }
     } catch (err) {
-      console.error(err);
-      if (err.message && err.message.includes("Database table not found")) {
-        alert("Database is not set up yet. Please contact the administrator.");
-      } else {
-        alert("Error storing idea in database.");
-      }
+      console.error("Unexpected error:", err);
+      alert(`Error: ${err.message || "An unexpected error occurred. Please try again."}`);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -178,7 +187,7 @@ const ArisePage = () => {
                 variants={jitter}
                 className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
                 focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
-                placeholder="Class"
+                placeholder="Class (Optional)"
                 type="text"
                 value={className}
                 onChange={(e) => setClassName(e.target.value)}
@@ -313,7 +322,7 @@ const ArisePage = () => {
               variants={jitter}
               className="w-full bg-[#1b1b1b] border border-transparent p-3 pl-5 rounded-full 
               focus:outline-none text-gray-100 placeholder-gray-400 transition-all"
-              placeholder="Class"
+              placeholder="Class (Optional)"
               type="text"
               value={className}
               onChange={(e) => setClassName(e.target.value)}
